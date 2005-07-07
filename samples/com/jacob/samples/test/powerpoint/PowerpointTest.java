@@ -1,7 +1,7 @@
 package com.jacob.samples.test.powerpoint;
 
  /* 
-  * $Id: PowerpointTest.java,v 1.1 2005/07/07 01:08:23 clay_shooter Exp $ 
+  * $Id: PowerpointTest.java,v 1.2 2005/07/07 01:19:06 clay_shooter Exp $ 
   */ 
 import com.jacob.activeX.ActiveXComponent;
 import com.jacob.com.ComThread;
@@ -15,7 +15,7 @@ import com.jacob.com.Dispatch;
  * I am comitting this to the tree just in case we need to come back to it.
  */
 public class PowerpointTest extends Thread {      
-	private static final int NUM_THREADS = 3;
+	private static final int NUM_THREADS = 5;
     protected static final int NUM_ITERATIONS = 50;    
           
     private static String POWERPOINT_TEST_PATH = 
