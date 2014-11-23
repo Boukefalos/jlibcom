@@ -19,6 +19,8 @@
  */
 package com.jacob.com;
 
+import com.github.boukefalos.jlibloader.Native;
+
 /**
  * The superclass of all Jacob objects. It is used to create a standard API
  * framework and to facilitate memory management for Java and COM memory
@@ -104,7 +106,7 @@ public class JacobObject {
 	 * force the jacob DLL to be loaded whenever this class is referenced
 	 */
 	static {
-		LibraryLoader.loadJacobLibrary();
+		Native.load("com.github.boukefalos", "jlibcom");
 	}
 
 }

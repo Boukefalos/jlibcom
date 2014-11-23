@@ -24,6 +24,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.WeakHashMap;
 
+import com.github.boukefalos.jlibloader.Native;
+
 /**
  * The Running Object Table (ROT) maps each thread to a collection of all the
  * JacobObjects that were created in that thread. It always operates on the
@@ -260,7 +262,6 @@ public abstract class ROT {
 	 * managed so we force a DLL load here by referencing JacobObject
 	 */
 	static {
-		LibraryLoader.loadJacobLibrary();
+		Native.load("com.github.boukefalos", "jlibcom");
 	}
-
 }

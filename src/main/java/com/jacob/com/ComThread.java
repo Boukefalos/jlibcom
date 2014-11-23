@@ -19,6 +19,8 @@
  */
 package com.jacob.com;
 
+import com.github.boukefalos.jlibloader.Native;
+
 /**
  * Represents a COM level thread This is an abstract class because all the
  * methods are static and no instances are ever created.
@@ -108,7 +110,7 @@ public abstract class ComThread {
 		if (JacobObject.isDebugEnabled()) {
 			JacobObject.debug("ComThread: before Init: " + mode);
 		}
-		doCoInitialize(mode);
+		//doCoInitialize(mode);
 		if (JacobObject.isDebugEnabled()) {
 			JacobObject.debug("ComThread: after Init: " + mode);
 		}
@@ -164,6 +166,6 @@ public abstract class ComThread {
 	 * other reference to one of the JacboObject subclasses is made.
 	 */
 	static {
-		LibraryLoader.loadJacobLibrary();
+		Native.load("com.github.boukefalos", "jlibcom");
 	}
 }
