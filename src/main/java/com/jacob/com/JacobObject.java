@@ -69,28 +69,6 @@ public class JacobObject {
 	}
 
 	/**
-	 * Loads JacobVersion.Properties and returns the value of version in it
-	 * 
-	 * @deprecated use JacobReleaseInfo.getBuildDate() instead.
-	 * @return String value of version in JacobVersion.Properties or "" if none
-	 */
-	@Deprecated
-	public static String getBuildDate() {
-		return JacobReleaseInfo.getBuildDate();
-	}
-
-	/**
-	 * Loads JacobVersion.Properties and returns the value of version in it
-	 * 
-	 * @deprecated use JacobReleaseInfo.getBuildVersion() instead.
-	 * @return String value of version in JacobVersion.Properties or "" if none
-	 */
-	@Deprecated
-	public static String getBuildVersion() {
-		return JacobReleaseInfo.getBuildVersion();
-	}
-
-	/**
 	 * Very basic debugging function.
 	 * 
 	 * @param istrMessage
