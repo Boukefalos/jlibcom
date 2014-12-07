@@ -1,19 +1,21 @@
 /*
- * Copyright (c) 1999-2004 Sourceforge JACOB Project. All rights reserved. Originator: Dan Adler
- * (http://danadler.com). Get more information about JACOB at
- * http://sourceforge.net/projects/jacob-project
- * 
- * This library is free software; you can redistribute it and/or modify it under the terms of the
- * GNU Lesser General Public License as published by the Free Software Foundation; either version
- * 2.1 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
- * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Copyright (c) 1999-2004 Sourceforge JACOB Project.
+ * All rights reserved. Originator: Dan Adler (http://danadler.com).
+ * Get more information about JACOB at http://sourceforge.net/projects/jacob-project
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public License along with this library;
- * if not, write to the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
- * 02110-1301 USA
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 package com.jacob.com;
 
@@ -50,7 +52,7 @@ public class Dispatch extends JacobObject {
 	 * directly to get the dispatch id. You really can't rename it or make it
 	 * private
 	 */
-	public long m_pDispatch;
+	public int m_pDispatch;
 
 	/** program Id passed in by ActiveX components in their constructor */
 	private String programId = null;
@@ -198,7 +200,7 @@ public class Dispatch extends JacobObject {
 	 * 
 	 * @param pDisp
 	 */
-	protected Dispatch(long pDisp) {
+	protected Dispatch(int pDisp) {
 		m_pDispatch = pDisp;
 	}
 
@@ -233,7 +235,6 @@ public class Dispatch extends JacobObject {
 	 * 
 	 * @see java.lang.Object#finalize()
 	 */
-	@Override
 	protected void finalize() {
 		safeRelease();
 	}
@@ -243,7 +244,6 @@ public class Dispatch extends JacobObject {
 	 * 
 	 * @see com.jacob.com.JacobObject#safeRelease()
 	 */
-	@Override
 	public void safeRelease() {
 		super.safeRelease();
 		if (isAttached()) {
@@ -380,10 +380,11 @@ public class Dispatch extends JacobObject {
 	 *            an array of argument objects
 	 */
 	public static void callSubN(Dispatch dispatchTarget, String name,
-			Object... args) {
+			Object[] args) {
 		throwIfUnattachedDispatch(dispatchTarget);
 		invokeSubv(dispatchTarget, name, Dispatch.Method | Dispatch.Get,
-				VariantUtilities.objectsToVariants(args), new int[args.length]);
+				VariantUtilities.objectsToVariants(args),
+				new int[args.length]);
 	}
 
 	/**
@@ -393,10 +394,11 @@ public class Dispatch extends JacobObject {
 	 *            an array of argument objects
 	 */
 	public static void callSubN(Dispatch dispatchTarget, int dispID,
-			Object... args) {
+			Object[] args) {
 		throwIfUnattachedDispatch(dispatchTarget);
 		invokeSubv(dispatchTarget, dispID, Dispatch.Method | Dispatch.Get,
-				VariantUtilities.objectsToVariants(args), new int[args.length]);
+				VariantUtilities.objectsToVariants(args),
+				new int[args.length]);
 	}
 
 	/*
@@ -448,10 +450,11 @@ public class Dispatch extends JacobObject {
 	 * @return Variant returned by call
 	 */
 	public static Variant callN(Dispatch dispatchTarget, String name,
-			Object... args) {
+			Object[] args) {
 		throwIfUnattachedDispatch(dispatchTarget);
 		return invokev(dispatchTarget, name, Dispatch.Method | Dispatch.Get,
-				VariantUtilities.objectsToVariants(args), new int[args.length]);
+				VariantUtilities.objectsToVariants(args),
+				new int[args.length]);
 	}
 
 	/**
@@ -461,10 +464,11 @@ public class Dispatch extends JacobObject {
 	 * @return Variant returned by call
 	 */
 	public static Variant callN(Dispatch dispatchTarget, int dispID,
-			Object... args) {
+			Object[] args) {
 		throwIfUnattachedDispatch(dispatchTarget);
 		return invokev(dispatchTarget, dispID, Dispatch.Method | Dispatch.Get,
-				VariantUtilities.objectsToVariants(args), new int[args.length]);
+				VariantUtilities.objectsToVariants(args),
+				new int[args.length]);
 	}
 
 	/**
@@ -526,19 +530,134 @@ public class Dispatch extends JacobObject {
 	 */
 	public static Variant call(Dispatch dispatchTarget, String name) {
 		throwIfUnattachedDispatch(dispatchTarget);
-		return callN(dispatchTarget, name, (Object) NO_VARIANT_ARGS);
+		return callN(dispatchTarget, name, NO_VARIANT_ARGS);
 	}
 
 	/**
 	 * @param dispatchTarget
 	 * @param name
-	 * @param attributes
+	 * @param a1
 	 * @return Variant returned by underlying callN
 	 */
-	public static Variant call(Dispatch dispatchTarget, String name,
-			Object... attributes) {
+	public static Variant call(Dispatch dispatchTarget, String name, Object a1) {
 		throwIfUnattachedDispatch(dispatchTarget);
-		return callN(dispatchTarget, name, attributes);
+		return callN(dispatchTarget, name, new Object[] { a1 });
+	}
+
+	/**
+	 * @param dispatchTarget
+	 * @param name
+	 * @param a1
+	 * @param a2
+	 * @return Variant returned by underlying callN
+	 */
+	public static Variant call(Dispatch dispatchTarget, String name, Object a1,
+			Object a2) {
+		throwIfUnattachedDispatch(dispatchTarget);
+		return callN(dispatchTarget, name, new Object[] { a1, a2 });
+	}
+
+	/**
+	 * @param dispatchTarget
+	 * @param name
+	 * @param a1
+	 * @param a2
+	 * @param a3
+	 * @return Variant returned by underlying callN
+	 */
+	public static Variant call(Dispatch dispatchTarget, String name, Object a1,
+			Object a2, Object a3) {
+		throwIfUnattachedDispatch(dispatchTarget);
+		return callN(dispatchTarget, name, new Object[] { a1, a2, a3 });
+	}
+
+	/**
+	 * @param dispatchTarget
+	 * @param name
+	 * @param a1
+	 * @param a2
+	 * @param a3
+	 * @param a4
+	 * @return Variant retuned by underlying callN
+	 */
+	public static Variant call(Dispatch dispatchTarget, String name, Object a1,
+			Object a2, Object a3, Object a4) {
+		throwIfUnattachedDispatch(dispatchTarget);
+		return callN(dispatchTarget, name, new Object[] { a1, a2, a3, a4 });
+	}
+
+	/**
+	 * @param dispatchTarget
+	 * @param name
+	 * @param a1
+	 * @param a2
+	 * @param a3
+	 * @param a4
+	 * @param a5
+	 * @return Variant returned by underlying callN
+	 */
+	public static Variant call(Dispatch dispatchTarget, String name, Object a1,
+			Object a2, Object a3, Object a4, Object a5) {
+		throwIfUnattachedDispatch(dispatchTarget);
+		return callN(dispatchTarget, name, new Object[] { a1, a2, a3, a4, a5 });
+	}
+
+	/**
+	 * @param dispatchTarget
+	 * @param name
+	 * @param a1
+	 * @param a2
+	 * @param a3
+	 * @param a4
+	 * @param a5
+	 * @param a6
+	 * @return Variant retuned by underlying callN
+	 */
+	public static Variant call(Dispatch dispatchTarget, String name, Object a1,
+			Object a2, Object a3, Object a4, Object a5, Object a6) {
+		throwIfUnattachedDispatch(dispatchTarget);
+		return callN(dispatchTarget, name, new Object[] { a1, a2, a3, a4, a5,
+				a6 });
+	}
+
+	/**
+	 * @param dispatchTarget
+	 * @param name
+	 * @param a1
+	 * @param a2
+	 * @param a3
+	 * @param a4
+	 * @param a5
+	 * @param a6
+	 * @param a7
+	 * @return Variant returned by underlying callN
+	 */
+	public static Variant call(Dispatch dispatchTarget, String name, Object a1,
+			Object a2, Object a3, Object a4, Object a5, Object a6, Object a7) {
+		throwIfUnattachedDispatch(dispatchTarget);
+		return callN(dispatchTarget, name, new Object[] { a1, a2, a3, a4, a5,
+				a6, a7 });
+	}
+
+	/**
+	 * @param dispatchTarget
+	 * @param name
+	 * @param a1
+	 * @param a2
+	 * @param a3
+	 * @param a4
+	 * @param a5
+	 * @param a6
+	 * @param a7
+	 * @param a8
+	 * @return Variant retuned by underlying callN
+	 */
+	public static Variant call(Dispatch dispatchTarget, String name, Object a1,
+			Object a2, Object a3, Object a4, Object a5, Object a6, Object a7,
+			Object a8) {
+		throwIfUnattachedDispatch(dispatchTarget);
+		return callN(dispatchTarget, name, new Object[] { a1, a2, a3, a4, a5,
+				a6, a7, a8 });
 	}
 
 	/**
@@ -548,21 +667,135 @@ public class Dispatch extends JacobObject {
 	 */
 	public static Variant call(Dispatch dispatchTarget, int dispid) {
 		throwIfUnattachedDispatch(dispatchTarget);
-		return callN(dispatchTarget, dispid, (Object) NO_VARIANT_ARGS);
+		return callN(dispatchTarget, dispid, NO_VARIANT_ARGS);
 	}
 
 	/**
 	 * @param dispatchTarget
 	 * @param dispid
-	 * @param attributes
-	 *            var arg list of attributes that will be passed to the
-	 *            underlying function
+	 * @param a1
 	 * @return Variant returned by underlying callN
 	 */
-	public static Variant call(Dispatch dispatchTarget, int dispid,
-			Object... attributes) {
+	public static Variant call(Dispatch dispatchTarget, int dispid, Object a1) {
 		throwIfUnattachedDispatch(dispatchTarget);
-		return callN(dispatchTarget, dispid, attributes);
+		return callN(dispatchTarget, dispid, new Object[] { a1 });
+	}
+
+	/**
+	 * @param dispatchTarget
+	 * @param dispid
+	 * @param a1
+	 * @param a2
+	 * @return Variant returned by underlying callN
+	 */
+	public static Variant call(Dispatch dispatchTarget, int dispid, Object a1,
+			Object a2) {
+		throwIfUnattachedDispatch(dispatchTarget);
+		return callN(dispatchTarget, dispid, new Object[] { a1, a2 });
+	}
+
+	/**
+	 * @param dispatchTarget
+	 * @param dispid
+	 * @param a1
+	 * @param a2
+	 * @param a3
+	 * @return Variant returned by underlying callN
+	 */
+	public static Variant call(Dispatch dispatchTarget, int dispid, Object a1,
+			Object a2, Object a3) {
+		throwIfUnattachedDispatch(dispatchTarget);
+		return callN(dispatchTarget, dispid, new Object[] { a1, a2, a3 });
+	}
+
+	/**
+	 * @param dispatchTarget
+	 * @param dispid
+	 * @param a1
+	 * @param a2
+	 * @param a3
+	 * @param a4
+	 * @return Variant returned by underlying callN
+	 */
+	public static Variant call(Dispatch dispatchTarget, int dispid, Object a1,
+			Object a2, Object a3, Object a4) {
+		throwIfUnattachedDispatch(dispatchTarget);
+		return callN(dispatchTarget, dispid, new Object[] { a1, a2, a3, a4 });
+	}
+
+	/**
+	 * @param dispatchTarget
+	 * @param dispid
+	 * @param a1
+	 * @param a2
+	 * @param a3
+	 * @param a4
+	 * @param a5
+	 * @return Variant returned by underlying callN
+	 */
+	public static Variant call(Dispatch dispatchTarget, int dispid, Object a1,
+			Object a2, Object a3, Object a4, Object a5) {
+		throwIfUnattachedDispatch(dispatchTarget);
+		return callN(dispatchTarget, dispid,
+				new Object[] { a1, a2, a3, a4, a5 });
+	}
+
+	/**
+	 * @param dispatchTarget
+	 * @param dispid
+	 * @param a1
+	 * @param a2
+	 * @param a3
+	 * @param a4
+	 * @param a5
+	 * @param a6
+	 * @return Variant returned by underlying callN
+	 */
+	public static Variant call(Dispatch dispatchTarget, int dispid, Object a1,
+			Object a2, Object a3, Object a4, Object a5, Object a6) {
+		throwIfUnattachedDispatch(dispatchTarget);
+		return callN(dispatchTarget, dispid, new Object[] { a1, a2, a3, a4, a5,
+				a6 });
+	}
+
+	/**
+	 * @param dispatchTarget
+	 * @param dispid
+	 * @param a1
+	 * @param a2
+	 * @param a3
+	 * @param a4
+	 * @param a5
+	 * @param a6
+	 * @param a7
+	 * @return Variant returned by underlying callN
+	 */
+	public static Variant call(Dispatch dispatchTarget, int dispid, Object a1,
+			Object a2, Object a3, Object a4, Object a5, Object a6, Object a7) {
+		throwIfUnattachedDispatch(dispatchTarget);
+		return callN(dispatchTarget, dispid, new Object[] { a1, a2, a3, a4, a5,
+				a6, a7 });
+	}
+
+	/**
+	 * @param dispatchTarget
+	 * @param dispid
+	 * @param a1
+	 * @param a2
+	 * @param a3
+	 * @param a4
+	 * @param a5
+	 * @param a6
+	 * @param a7
+	 * @param a8
+	 * @return Variant returned by underlying callN
+	 */
+	public static Variant call(Dispatch dispatchTarget, int dispid, Object a1,
+			Object a2, Object a3, Object a4, Object a5, Object a6, Object a7,
+			Object a8) {
+		throwIfUnattachedDispatch(dispatchTarget);
+		return callN(dispatchTarget, dispid, new Object[] { a1, a2, a3, a4, a5,
+				a6, a7, a8 });
 	}
 
 	/*
@@ -677,8 +910,8 @@ public class Dispatch extends JacobObject {
 	public static void invokeSub(Dispatch dispatchTarget, String name,
 			int dispid, int lcid, int wFlags, Object[] oArg, int[] uArgErr) {
 		throwIfUnattachedDispatch(dispatchTarget);
-		invokeSubv(dispatchTarget, name, dispid, lcid, wFlags, VariantUtilities
-				.objectsToVariants(oArg), uArgErr);
+		invokeSubv(dispatchTarget, name, dispid, lcid, wFlags,
+				VariantUtilities.objectsToVariants(oArg), uArgErr);
 	}
 
 	/*
@@ -735,14 +968,133 @@ public class Dispatch extends JacobObject {
 	 * 
 	 * @param dispatchTarget
 	 * @param name
-	 * @param attributes
-	 *            var args list of attributes to be passed to underlying
-	 *            functions
+	 * @param a1
 	 */
-	public static void callSub(Dispatch dispatchTarget, String name,
-			Object... attributes) {
+	public static void callSub(Dispatch dispatchTarget, String name, Object a1) {
 		throwIfUnattachedDispatch(dispatchTarget);
-		callSubN(dispatchTarget, name, attributes);
+		callSubN(dispatchTarget, name, new Object[] { a1 });
+	}
+
+	/**
+	 * makes call to native callSubN
+	 * 
+	 * @param dispatchTarget
+	 * @param name
+	 * @param a1
+	 * @param a2
+	 */
+	public static void callSub(Dispatch dispatchTarget, String name, Object a1,
+			Object a2) {
+		throwIfUnattachedDispatch(dispatchTarget);
+		callSubN(dispatchTarget, name, new Object[] { a1, a2 });
+	}
+
+	/**
+	 * makes call to native callSubN
+	 * 
+	 * @param dispatchTarget
+	 * @param name
+	 * @param a1
+	 * @param a2
+	 * @param a3
+	 */
+	public static void callSub(Dispatch dispatchTarget, String name, Object a1,
+			Object a2, Object a3) {
+		throwIfUnattachedDispatch(dispatchTarget);
+		callSubN(dispatchTarget, name, new Object[] { a1, a2, a3 });
+	}
+
+	/**
+	 * makes call to native callSubN
+	 * 
+	 * @param dispatchTarget
+	 * @param name
+	 * @param a1
+	 * @param a2
+	 * @param a3
+	 * @param a4
+	 */
+	public static void callSub(Dispatch dispatchTarget, String name, Object a1,
+			Object a2, Object a3, Object a4) {
+		throwIfUnattachedDispatch(dispatchTarget);
+		callSubN(dispatchTarget, name, new Object[] { a1, a2, a3, a4 });
+	}
+
+	/**
+	 * makes call to native callSubN
+	 * 
+	 * @param dispatchTarget
+	 * @param name
+	 * @param a1
+	 * @param a2
+	 * @param a3
+	 * @param a4
+	 * @param a5
+	 */
+	public static void callSub(Dispatch dispatchTarget, String name, Object a1,
+			Object a2, Object a3, Object a4, Object a5) {
+		throwIfUnattachedDispatch(dispatchTarget);
+		callSubN(dispatchTarget, name, new Object[] { a1, a2, a3, a4, a5 });
+	}
+
+	/**
+	 * makes call to native callSubN
+	 * 
+	 * @param dispatchTarget
+	 * @param name
+	 * @param a1
+	 * @param a2
+	 * @param a3
+	 * @param a4
+	 * @param a5
+	 * @param a6
+	 */
+	public static void callSub(Dispatch dispatchTarget, String name, Object a1,
+			Object a2, Object a3, Object a4, Object a5, Object a6) {
+		throwIfUnattachedDispatch(dispatchTarget);
+		callSubN(dispatchTarget, name, new Object[] { a1, a2, a3, a4, a5, a6 });
+	}
+
+	/**
+	 * makes call to native callSubN
+	 * 
+	 * @param dispatchTarget
+	 * @param name
+	 * @param a1
+	 * @param a2
+	 * @param a3
+	 * @param a4
+	 * @param a5
+	 * @param a6
+	 * @param a7
+	 */
+	public static void callSub(Dispatch dispatchTarget, String name, Object a1,
+			Object a2, Object a3, Object a4, Object a5, Object a6, Object a7) {
+		throwIfUnattachedDispatch(dispatchTarget);
+		callSubN(dispatchTarget, name, new Object[] { a1, a2, a3, a4, a5, a6,
+				a7 });
+	}
+
+	/**
+	 * makes call to native callSubN
+	 * 
+	 * @param dispatchTarget
+	 * @param name
+	 * @param a1
+	 * @param a2
+	 * @param a3
+	 * @param a4
+	 * @param a5
+	 * @param a6
+	 * @param a7
+	 * @param a8
+	 */
+	public static void callSub(Dispatch dispatchTarget, String name, Object a1,
+			Object a2, Object a3, Object a4, Object a5, Object a6, Object a7,
+			Object a8) {
+		throwIfUnattachedDispatch(dispatchTarget);
+		callSubN(dispatchTarget, name, new Object[] { a1, a2, a3, a4, a5, a6,
+				a7, a8 });
 	}
 
 	/**
@@ -761,14 +1113,132 @@ public class Dispatch extends JacobObject {
 	 * 
 	 * @param dispatchTarget
 	 * @param dispid
-	 * @param attributes
-	 *            var args list of attributes to be passed to underlying
-	 *            function
+	 * @param a1
 	 */
-	public static void callSub(Dispatch dispatchTarget, int dispid,
-			Object... attributes) {
+	public static void callSub(Dispatch dispatchTarget, int dispid, Object a1) {
 		throwIfUnattachedDispatch(dispatchTarget);
-		callSubN(dispatchTarget, dispid, attributes);
+		callSubN(dispatchTarget, dispid, new Object[] { a1 });
+	}
+
+	/**
+	 * makes call to native callSubN
+	 * 
+	 * @param dispatchTarget
+	 * @param dispid
+	 * @param a1
+	 * @param a2
+	 */
+	public static void callSub(Dispatch dispatchTarget, int dispid, Object a1,
+			Object a2) {
+		throwIfUnattachedDispatch(dispatchTarget);
+		callSubN(dispatchTarget, dispid, new Object[] { a1, a2 });
+	}
+
+	/**
+	 * makes call to native callSubN
+	 * 
+	 * @param dispatchTarget
+	 * @param dispid
+	 * @param a1
+	 * @param a2
+	 * @param a3
+	 */
+	public static void callSub(Dispatch dispatchTarget, int dispid, Object a1,
+			Object a2, Object a3) {
+		callSubN(dispatchTarget, dispid, new Object[] { a1, a2, a3 });
+	}
+
+	/**
+	 * makes call to native callSubN
+	 * 
+	 * @param dispatchTarget
+	 * @param dispid
+	 * @param a1
+	 * @param a2
+	 * @param a3
+	 * @param a4
+	 */
+	public static void callSub(Dispatch dispatchTarget, int dispid, Object a1,
+			Object a2, Object a3, Object a4) {
+		throwIfUnattachedDispatch(dispatchTarget);
+		callSubN(dispatchTarget, dispid, new Object[] { a1, a2, a3, a4 });
+	}
+
+	/**
+	 * makes call to native callSubN
+	 * 
+	 * @param dispatchTarget
+	 * @param dispid
+	 * @param a1
+	 * @param a2
+	 * @param a3
+	 * @param a4
+	 * @param a5
+	 */
+	public static void callSub(Dispatch dispatchTarget, int dispid, Object a1,
+			Object a2, Object a3, Object a4, Object a5) {
+		throwIfUnattachedDispatch(dispatchTarget);
+		callSubN(dispatchTarget, dispid, new Object[] { a1, a2, a3, a4, a5 });
+	}
+
+	/**
+	 * makes call to native callSubN
+	 * 
+	 * @param dispatchTarget
+	 * @param dispid
+	 * @param a1
+	 * @param a2
+	 * @param a3
+	 * @param a4
+	 * @param a5
+	 * @param a6
+	 */
+	public static void callSub(Dispatch dispatchTarget, int dispid, Object a1,
+			Object a2, Object a3, Object a4, Object a5, Object a6) {
+		throwIfUnattachedDispatch(dispatchTarget);
+		callSubN(dispatchTarget, dispid,
+				new Object[] { a1, a2, a3, a4, a5, a6 });
+	}
+
+	/**
+	 * makes call to native callSubN
+	 * 
+	 * @param dispatchTarget
+	 * @param dispid
+	 * @param a1
+	 * @param a2
+	 * @param a3
+	 * @param a4
+	 * @param a5
+	 * @param a6
+	 * @param a7
+	 */
+	public static void callSub(Dispatch dispatchTarget, int dispid, Object a1,
+			Object a2, Object a3, Object a4, Object a5, Object a6, Object a7) {
+		throwIfUnattachedDispatch(dispatchTarget);
+		callSubN(dispatchTarget, dispid, new Object[] { a1, a2, a3, a4, a5, a6,
+				a7 });
+	}
+
+	/**
+	 * makes call to native callSubN
+	 * 
+	 * @param dispatchTarget
+	 * @param dispid
+	 * @param a1
+	 * @param a2
+	 * @param a3
+	 * @param a4
+	 * @param a5
+	 * @param a6
+	 * @param a7
+	 * @param a8
+	 */
+	public static void callSub(Dispatch dispatchTarget, int dispid, Object a1,
+			Object a2, Object a3, Object a4, Object a5, Object a6, Object a7,
+			Object a8) {
+		callSubN(dispatchTarget, dispid, new Object[] { a1, a2, a3, a4, a5, a6,
+				a7, a8 });
 	}
 
 	/*
@@ -843,30 +1313,6 @@ public class Dispatch extends JacobObject {
 	 */
 	public static Variant get_CaseSensitive(Dispatch dispatchTarget, String name) {
 		throw new NotImplementedException("not implemented yet");
-	}
-
-	/**
-	 * Cover for native method
-	 * 
-	 * @param disp
-	 * @param dispid
-	 * @param lcid
-	 * @return 0 if the dispatch is still active and 1 if it has exited
-	 */
-	public static native int hasExited(Dispatch disp, int dispid, int lcid);
-
-	/**
-	 * The method is used to poll until it returns 1, indicating that the COM
-	 * server in gone.
-	 * <p>
-	 * Sourceforge feature request 2927058
-	 * 
-	 * @param dispatchTarget
-	 * @return 0 if the dispatch is still active and 1 if it has exited
-	 */
-	public static int hasExited(Dispatch dispatchTarget) {
-		throwIfUnattachedDispatch(dispatchTarget);
-		return hasExited(dispatchTarget, 0, LOCALE_SYSTEM_DEFAULT);
 	}
 
 }

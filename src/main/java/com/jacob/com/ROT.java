@@ -24,8 +24,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.WeakHashMap;
 
-import com.github.boukefalos.jlibloader.Native;
-
 /**
  * The Running Object Table (ROT) maps each thread to a collection of all the
  * JacobObjects that were created in that thread. It always operates on the
@@ -77,9 +75,11 @@ public abstract class ROT {
 	protected static String PUT_IN_ROT_SUFFIX = ".PutInROT";
 
 	/**
-	 * ThreadLocal with the com objects created in that thread
+	 * A hash table where each element is another HashMap that represents a
+	 * thread. Each thread HashMap contains the com objects created in that
+	 * thread
 	 */
-	private static ThreadLocal<Map<JacobObject, String>> rot = new ThreadLocal<Map<JacobObject, String>>();
+	private static HashMap<String, Map<JacobObject, String>> rot = new HashMap<String, Map<JacobObject, String>>();
 
 	/**
 	 * adds a new thread storage area to rot
@@ -87,8 +87,13 @@ public abstract class ROT {
 	 * @return Map corresponding to the thread that this call was made in
 	 */
 	protected synchronized static Map<JacobObject, String> addThread() {
-		Map<JacobObject, String> tab = rot.get();
-		if (tab == null) {
+		// should use the id here instead of the name because the name can be
+		// changed
+		String t_name = Thread.currentThread().getName();
+		if (rot.containsKey(t_name)) {
+			// nothing to do
+		} else {
+			Map<JacobObject, String> tab = null;
 			if (JacobObject.isDebugEnabled()) {
 				JacobObject.debug("ROT: Automatic GC flag == "
 						+ USE_AUTOMATIC_GARBAGE_COLLECTION);
@@ -98,9 +103,9 @@ public abstract class ROT {
 			} else {
 				tab = new WeakHashMap<JacobObject, String>();
 			}
-			rot.set(tab);
+			rot.put(t_name, tab);
 		}
-		return tab;
+		return getThreadObjects(false);
 	}
 
 	/**
@@ -113,11 +118,11 @@ public abstract class ROT {
 	 */
 	protected synchronized static Map<JacobObject, String> getThreadObjects(
 			boolean createIfDoesNotExist) {
-		Map<JacobObject, String> tab = rot.get();
-		if (tab == null && createIfDoesNotExist) {
-			tab = addThread();
+		String t_name = Thread.currentThread().getName();
+		if (!rot.containsKey(t_name) && createIfDoesNotExist) {
+			addThread();
 		}
-		return tab;
+		return rot.get(t_name);
 	}
 
 	/**
@@ -128,6 +133,11 @@ public abstract class ROT {
 	 * tear down and provides a synchronous way of releasing memory
 	 */
 	protected static void clearObjects() {
+		if (JacobObject.isDebugEnabled()) {
+			JacobObject.debug("ROT: " + rot.keySet().size()
+					+ " thread tables exist");
+		}
+
 		Map<JacobObject, String> tab = getThreadObjects(false);
 		if (tab != null) {
 			if (JacobObject.isDebugEnabled()) {
@@ -179,7 +189,8 @@ public abstract class ROT {
 	 * Removes the map from the rot that is associated with the current thread.
 	 */
 	private synchronized static void removeThread() {
-		rot.remove();
+		// should this see if it exists first?
+		rot.remove(Thread.currentThread().getName());
 	}
 
 	/**
@@ -262,6 +273,7 @@ public abstract class ROT {
 	 * managed so we force a DLL load here by referencing JacobObject
 	 */
 	static {
-		Native.load("com.github.boukefalos", "jlibcom");
+		LibraryLoader.loadJacobLibrary();
 	}
+
 }

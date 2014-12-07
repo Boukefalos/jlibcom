@@ -213,16 +213,11 @@ public final class VariantUtilities {
 	 */
 	protected static Variant[] objectsToVariants(
 			Object[] arrayOfObjectsToBeConverted) {
-		if (arrayOfObjectsToBeConverted instanceof Variant[]) {
-			// just return the passed in array if it is a Variant array
-			return (Variant[]) arrayOfObjectsToBeConverted;
-		} else {
-			Variant vArg[] = new Variant[arrayOfObjectsToBeConverted.length];
-			for (int i = 0; i < arrayOfObjectsToBeConverted.length; i++) {
-				vArg[i] = objectToVariant(arrayOfObjectsToBeConverted[i]);
-			}
-			return vArg;
+		Variant vArg[] = new Variant[arrayOfObjectsToBeConverted.length];
+		for (int i = 0; i < arrayOfObjectsToBeConverted.length; i++) {
+			vArg[i] = objectToVariant(arrayOfObjectsToBeConverted[i]);
 		}
+		return vArg;
 	}
 
 	/**
@@ -356,7 +351,7 @@ public final class VariantUtilities {
 				break;
 			case Variant.VariantTypeMask: // 4095
 				result = new NotImplementedException(
-						"toJavaObject() Not implemented for VariantBstrBlob/VariantTypeMask");
+						"toJavaObject() Not implemented for VariantTypeMask");
 				break;
 			case Variant.VariantArray: // 8192
 				result = new NotImplementedException(

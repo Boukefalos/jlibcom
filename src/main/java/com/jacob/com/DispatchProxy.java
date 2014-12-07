@@ -32,7 +32,7 @@ public class DispatchProxy extends JacobObject {
 	/**
 	 * Comment for <code>m_pStream</code>
 	 */
-	public long m_pStream;
+	public int m_pStream;
 
 	/**
 	 * Marshals the passed in dispatch into the stream
@@ -67,7 +67,6 @@ public class DispatchProxy extends JacobObject {
 	 * 
 	 * @see java.lang.Object#finalize()
 	 */
-	@Override
 	public void finalize() {
 		safeRelease();
 	}
@@ -77,7 +76,6 @@ public class DispatchProxy extends JacobObject {
 	 * 
 	 * @see com.jacob.com.JacobObject#safeRelease()
 	 */
-	@Override
 	public void safeRelease() {
 		super.safeRelease();
 		if (m_pStream != 0) {

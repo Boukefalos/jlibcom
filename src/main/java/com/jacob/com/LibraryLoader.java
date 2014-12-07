@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999-2004 Sourceforge JACOB Project.
+ * Copyright (c) 1999-2007 Sourceforge JACOB Project.
  * All rights reserved. Originator: Dan Adler (http://danadler.com).
  * Get more information about JACOB at http://sourceforge.net/projects/jacob-project
  *
@@ -19,16 +19,22 @@
  */
 package com.jacob.com;
 
-/**
- * a public class to variant that is used to track which variant objects are
- * created by event callbacks This is solely used for that purpose.
- */
-public class VariantViaEvent extends Variant {
+import com.github.boukefalos.jlibloader.Native;
 
+/**
+ * Utility class to centralize the way in which the jacob JNI library is loaded.
+ * 
+ * @author Scott Dickerson (sjd78)
+ * @author Jason Smith
+ */
+public final class LibraryLoader {
 	/**
-	 * Standard constructor used by JNI event handling layer
+	 * Load the jacob dll
+	 * 
+	 * @throws UnsatisfiedLinkError
+	 *             if the library does not exist.
 	 */
-	public VariantViaEvent() {
-		super();
+	public static void loadJacobLibrary() {
+		Native.load("com.github.boukefalos", "jlibcom");
 	}
 }

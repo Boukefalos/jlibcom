@@ -19,8 +19,6 @@
  */
 package com.jacob.com;
 
-import com.github.boukefalos.jlibloader.Native;
-
 /**
  * A class that implements a Single Threaded Apartment. Users will subclass this
  * and override OnInit() and OnQuit() where they will create and destroy a COM
@@ -98,6 +96,6 @@ public class STA extends Thread {
 	 * DLL without this
 	 */
 	static {
-		Native.load("com.github.boukefalos", "jlibcom");		
+		LibraryLoader.loadJacobLibrary();
 	}
 }

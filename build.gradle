@@ -16,7 +16,7 @@ dependencies {
 
 group = 'com.github.boukefalos'
 project.archivesBaseName = 'jlibcom'
-version = '1.18'
+version = '1.15'
 
 task wrapper(type: Wrapper) {
 	gradleVersion = '1.12'

@@ -25,8 +25,8 @@ package com.jacob.com;
  * were a later addition.
  */
 public class SafeArray extends JacobObject {
-	/** The super secret long that is actually the pointer to windows memory */
-	long m_pV = 0;
+	/** The super secret int that is actually the pointer to windows memory */
+	int m_pV = 0;
 
 	/**
 	 * Constructor. Why does this exist? Yeah, someone will post on sourceforge
@@ -90,25 +90,19 @@ public class SafeArray extends JacobObject {
 	}
 
 	/**
-	 * Convert a string to a VT_UI1 array.
+	 * convert a string to a VT_UI1 array
 	 * 
 	 * @param s
 	 *            source string
 	 */
 	public SafeArray(String s) {
-		// https://sourceforge.net/p/jacob-project/patches/41/
-		/*
-		 * char[] ca = s.toCharArray(); init(Variant.VariantByte, new int[] { 0
-		 * }, new int[] { ca.length }); fromCharArray(ca);
-		 */
-		byte[] ba = s.getBytes();
-		init(Variant.VariantByte, new int[] { 0 }, new int[] { ba.length });
-		fromByteArray(ba);
-
+		char[] ca = s.toCharArray();
+		init(Variant.VariantByte, new int[] { 0 }, new int[] { ca.length });
+		fromCharArray(ca);
 	}
 
 	/**
-	 * Convert a VT_UI1 array to string. Is this broken for unicode?
+	 * convert a VT_UI1 array to string
 	 * 
 	 * @return variant byte as a string
 	 */
@@ -116,15 +110,10 @@ public class SafeArray extends JacobObject {
 		if (getvt() != Variant.VariantByte) {
 			return null;
 		}
-		// https://sourceforge.net/p/jacob-project/patches/41/
-		/*
-		 * char ja[] = toCharArray(); return new String(ja);
-		 */
-		byte ba[] = toByteArray();
-		return new String(ba);
+		char ja[] = toCharArray();
+		return new String(ja);
 	}
 
-	@Override
 	public native Object clone();
 
 	/**
@@ -137,7 +126,6 @@ public class SafeArray extends JacobObject {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
 	protected void finalize() {
 		safeRelease();
 	}
@@ -223,8 +211,8 @@ public class SafeArray extends JacobObject {
 	/**
 	 * get boolean value from N-dimensional array
 	 * 
-	 * @param indices
-	 *            - length must equal Dimension of SafeArray
+	 * @param indices -
+	 *            length must equal Dimension of SafeArray
 	 * @return the value at the specified location
 	 */
 	public native boolean getBoolean(int indices[]);
@@ -260,8 +248,8 @@ public class SafeArray extends JacobObject {
 	/**
 	 * get byte value from N-dimensional array
 	 * 
-	 * @param indices
-	 *            - length must equal Dimension of SafeArray
+	 * @param indices -
+	 *            length must equal Dimension of SafeArray
 	 * @return the value at the specified location
 	 */
 	public native byte getByte(int indices[]);
@@ -296,8 +284,8 @@ public class SafeArray extends JacobObject {
 	/**
 	 * get char value from N-dimensional array
 	 * 
-	 * @param indices
-	 *            - length must equal Dimension of SafeArray
+	 * @param indices -
+	 *            length must equal Dimension of SafeArray
 	 * @return the value at the specified location
 	 */
 	public native char getChar(int indices[]);
@@ -332,8 +320,8 @@ public class SafeArray extends JacobObject {
 	/**
 	 * get double value from N-dimensional array
 	 * 
-	 * @param indices
-	 *            - length must equal Dimension of SafeArray
+	 * @param indices -
+	 *            length must equal Dimension of SafeArray
 	 * @return the value at the specified location
 	 */
 	public native double getDouble(int indices[]);
@@ -379,8 +367,8 @@ public class SafeArray extends JacobObject {
 	/**
 	 * get float value from N-dimensional array
 	 * 
-	 * @param indices
-	 *            - length must equal Dimension of SafeArray
+	 * @param indices -
+	 *            length must equal Dimension of SafeArray
 	 * @return the value at the specified location
 	 */
 	public native float getFloat(int indices[]);
@@ -417,8 +405,8 @@ public class SafeArray extends JacobObject {
 	/**
 	 * get int value from N-dimensional array
 	 * 
-	 * @param indices
-	 *            - length must equal Dimension of SafeArray
+	 * @param indices -
+	 *            length must equal Dimension of SafeArray
 	 * @return the value at the specified location
 	 */
 	public native int getInt(int indices[]);
@@ -460,8 +448,8 @@ public class SafeArray extends JacobObject {
 	/**
 	 * get long value from N-dimensional array
 	 * 
-	 * @param indices
-	 *            - length must equal Dimension of SafeArray
+	 * @param indices -
+	 *            length must equal Dimension of SafeArray
 	 * @return the value at the specified location
 	 */
 	public native long getLong(int indices[]);
@@ -528,8 +516,8 @@ public class SafeArray extends JacobObject {
 	/**
 	 * get short value from N-dimensional array
 	 * 
-	 * @param indices
-	 *            - length must equal Dimension of SafeArray
+	 * @param indices -
+	 *            length must equal Dimension of SafeArray
 	 * @return the value at the specified location
 	 */
 	public native short getShort(int indices[]);
@@ -566,8 +554,8 @@ public class SafeArray extends JacobObject {
 	/**
 	 * get String value from N-dimensional array
 	 * 
-	 * @param indices
-	 *            - length must equal Dimension of SafeArray
+	 * @param indices -
+	 *            length must equal Dimension of SafeArray
 	 * @return the value at the specified location
 	 */
 	public native String getString(int indices[]);
@@ -615,8 +603,8 @@ public class SafeArray extends JacobObject {
 	/**
 	 * get Variant value from N-dimensional array
 	 * 
-	 * @param indices
-	 *            - length must equal Dimension of SafeArray
+	 * @param indices -
+	 *            length must equal Dimension of SafeArray
 	 * @return the value at the specified location
 	 */
 	public native Variant getVariant(int indices[]);
@@ -666,7 +654,6 @@ public class SafeArray extends JacobObject {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
 	public void safeRelease() {
 		super.safeRelease();
 		if (m_pV != 0) {
@@ -692,8 +679,8 @@ public class SafeArray extends JacobObject {
 	/**
 	 * set boolean value in N-dimensional array
 	 * 
-	 * @param indices
-	 *            - length must equal Dimension of SafeArray
+	 * @param indices -
+	 *            length must equal Dimension of SafeArray
 	 * @param c
 	 */
 	public native void setBoolean(int indices[], boolean c);
@@ -729,8 +716,8 @@ public class SafeArray extends JacobObject {
 	/**
 	 * set byte value in N-dimensional array
 	 * 
-	 * @param indices
-	 *            - length must equal Dimension of SafeArray
+	 * @param indices -
+	 *            length must equal Dimension of SafeArray
 	 * @param c
 	 */
 	public native void setByte(int indices[], byte c);
@@ -765,8 +752,8 @@ public class SafeArray extends JacobObject {
 	/**
 	 * set char value in N-dimensional array
 	 * 
-	 * @param indices
-	 *            - length must equal Dimension of SafeArray
+	 * @param indices -
+	 *            length must equal Dimension of SafeArray
 	 * @param c
 	 */
 	public native void setChar(int indices[], char c);
@@ -801,8 +788,8 @@ public class SafeArray extends JacobObject {
 	/**
 	 * set double value in N-dimensional array
 	 * 
-	 * @param indices
-	 *            - length must equal Dimension of SafeArray
+	 * @param indices -
+	 *            length must equal Dimension of SafeArray
 	 * @param c
 	 */
 	public native void setDouble(int indices[], double c);
@@ -838,8 +825,8 @@ public class SafeArray extends JacobObject {
 	/**
 	 * set float value in N-dimensional array
 	 * 
-	 * @param indices
-	 *            - length must equal Dimension of SafeArray
+	 * @param indices -
+	 *            length must equal Dimension of SafeArray
 	 * @param c
 	 */
 	public native void setFloat(int indices[], float c);
@@ -877,8 +864,8 @@ public class SafeArray extends JacobObject {
 	/**
 	 * set int value in N-dimensional array
 	 * 
-	 * @param indices
-	 *            - length must equal Dimension of SafeArray
+	 * @param indices -
+	 *            length must equal Dimension of SafeArray
 	 * @param c
 	 */
 	public native void setInt(int indices[], int c);
@@ -923,8 +910,8 @@ public class SafeArray extends JacobObject {
 	/**
 	 * set long value in N-dimensional array
 	 * 
-	 * @param indices
-	 *            - length must equal Dimension of SafeArray
+	 * @param indices -
+	 *            length must equal Dimension of SafeArray
 	 * @param c
 	 */
 	public native void setLong(int indices[], long c);
@@ -976,8 +963,8 @@ public class SafeArray extends JacobObject {
 	/**
 	 * set short value in N-dimensional array
 	 * 
-	 * @param indices
-	 *            - length must equal Dimension of SafeArray
+	 * @param indices -
+	 *            length must equal Dimension of SafeArray
 	 * @param c
 	 */
 	public native void setShort(int indices[], short c);
@@ -1019,8 +1006,8 @@ public class SafeArray extends JacobObject {
 	/**
 	 * set Stringvalue in N-dimensional array
 	 * 
-	 * @param indices
-	 *            - length must equal Dimension of SafeArray
+	 * @param indices -
+	 *            length must equal Dimension of SafeArray
 	 * @param c
 	 */
 	public native void setString(int indices[], String c);
@@ -1056,8 +1043,8 @@ public class SafeArray extends JacobObject {
 	/**
 	 * set Variant value in N-dimensional array
 	 * 
-	 * @param indices
-	 *            - length must equal Dimension of SafeArray
+	 * @param indices -
+	 *            length must equal Dimension of SafeArray
 	 * @param v
 	 */
 	public native void setVariant(int indices[], Variant v);
@@ -1134,7 +1121,6 @@ public class SafeArray extends JacobObject {
 	 * 
 	 * @return String contents of variant
 	 */
-	@Override
 	public String toString() {
 		String s = "";
 		int ndim = getNumDim();

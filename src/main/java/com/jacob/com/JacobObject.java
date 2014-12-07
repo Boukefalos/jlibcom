@@ -19,8 +19,6 @@
  */
 package com.jacob.com;
 
-import com.github.boukefalos.jlibloader.Native;
-
 /**
  * The superclass of all Jacob objects. It is used to create a standard API
  * framework and to facilitate memory management for Java and COM memory
@@ -65,7 +63,30 @@ public class JacobObject {
 	"true".equalsIgnoreCase(System.getProperty("com.jacob.debug"));
 
 	protected static boolean isDebugEnabled() {
+		// return true;
 		return DEBUG;
+	}
+
+	/**
+	 * Loads JacobVersion.Properties and returns the value of version in it
+	 * 
+	 * @deprecated use JacobReleaseInfo.getBuildDate() instead.
+	 * @return String value of version in JacobVersion.Properties or "" if none
+	 */
+	@Deprecated
+	public static String getBuildDate() {
+		return JacobReleaseInfo.getBuildDate();
+	}
+
+	/**
+	 * Loads JacobVersion.Properties and returns the value of version in it
+	 * 
+	 * @deprecated use JacobReleaseInfo.getBuildVersion() instead.
+	 * @return String value of version in JacobVersion.Properties or "" if none
+	 */
+	@Deprecated
+	public static String getBuildVersion() {
+		return JacobReleaseInfo.getBuildVersion();
 	}
 
 	/**
@@ -84,7 +105,7 @@ public class JacobObject {
 	 * force the jacob DLL to be loaded whenever this class is referenced
 	 */
 	static {
-		Native.load("com.github.boukefalos", "jlibcom");
+		LibraryLoader.loadJacobLibrary();
 	}
 
 }

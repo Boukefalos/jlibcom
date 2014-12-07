@@ -109,7 +109,7 @@ public class Variant extends JacobObject {
 
 	// VT_I1 = 16
 
-	/** variant's type is byte VT_UI1 This is an UNSIGNED byte */
+	/** variant's type is byte VT_UI1 */
 	public static final short VariantByte = 17;
 
 	// VT_UI2 = 18
@@ -137,13 +137,13 @@ public class Variant extends JacobObject {
 	// VT_CARRARY = 28
 	// VT_USERDEFINED = 29
 
-	/** what is this? VT_TYPEMASK && VT_BSTR_BLOB 0xfff */
+	/** what is this? VT_TYPEMASK && VT_BSTR_BLOB */
 	public static final short VariantTypeMask = 4095;
 
-	/** variant's type is array VT_ARRAY 0x2000 */
+	/** variant's type is array VT_ARRAY */
 	public static final short VariantArray = 8192;
 
-	/** variant's type is a reference (to IDispatch?) VT_BYREF 0x4000 */
+	/** variant's type is a reference (to IDispatch?) VT_BYREF */
 	public static final short VariantByref = 16384;
 
 	/*
@@ -161,7 +161,7 @@ public class Variant extends JacobObject {
 	/**
 	 * Pointer to MS struct.
 	 */
-	long m_pVariant = 0;
+	int m_pVariant = 0;
 
 	/**
 	 * public constructor, initializes and sets type to VariantEmpty
@@ -289,7 +289,6 @@ public class Variant extends JacobObject {
 	 * 
 	 * @return ?? comment says null?
 	 */
-	@Override
 	public native Object clone();
 
 	/**
@@ -304,7 +303,6 @@ public class Variant extends JacobObject {
 	 * 
 	 * @see java.lang.Object#finalize()
 	 */
-	@Override
 	protected void finalize() {
 		safeRelease();
 	}
@@ -333,7 +331,7 @@ public class Variant extends JacobObject {
 	 *             if variant is not of the requested type
 	 */
 	public boolean getBooleanRef() {
-		if ((this.getvt() & VariantTypeMask) == VariantBoolean
+		if ((this.getvt() & VariantBoolean) == VariantBoolean
 				&& (this.getvt() & VariantByref) == VariantByref) {
 			return getVariantBooleanRef();
 		} else {
@@ -367,7 +365,7 @@ public class Variant extends JacobObject {
 	 *             if variant is not of the requested type
 	 */
 	public byte getByteRef() {
-		if ((this.getvt() & VariantTypeMask) == VariantByte
+		if ((this.getvt() & VariantByte) == VariantByte
 				&& (this.getvt() & VariantByref) == VariantByref) {
 			return getVariantByteRef();
 		} else {
@@ -406,7 +404,7 @@ public class Variant extends JacobObject {
 	 *             if variant is not of the requested type
 	 */
 	public Currency getCurrencyRef() {
-		if ((this.getvt() & VariantTypeMask) == VariantCurrency
+		if ((this.getvt() & VariantCurrency) == VariantCurrency
 				&& (this.getvt() & VariantByref) == VariantByref) {
 			return new Currency(getVariantCurrencyRef());
 		} else {
@@ -440,7 +438,7 @@ public class Variant extends JacobObject {
 	 *             if variant is not of the requested type
 	 */
 	public double getDateRef() {
-		if ((this.getvt() & VariantTypeMask) == VariantDate
+		if ((this.getvt() & VariantDate) == VariantDate
 				&& (this.getvt() & VariantByref) == VariantByref) {
 			return getVariantDateRef();
 		} else {
@@ -475,7 +473,7 @@ public class Variant extends JacobObject {
 	 *             if variant is not of the requested type
 	 */
 	public BigDecimal getDecimalRef() {
-		if ((this.getvt() & VariantTypeMask) == VariantDecimal
+		if ((this.getvt() & VariantDecimal) == VariantDecimal
 				&& (this.getvt() & VariantByref) == VariantByref) {
 			return (BigDecimal) (getVariantDecRef());
 		} else {
@@ -495,7 +493,7 @@ public class Variant extends JacobObject {
 	 *             if wrong variant type
 	 */
 	public Dispatch getDispatch() {
-		if (this.getvt() == VariantDispatch) {
+		if ((this.getvt() & VariantDispatch) == VariantDispatch) {
 			return toDispatch();
 		} else {
 			throw new IllegalStateException(
@@ -513,7 +511,7 @@ public class Variant extends JacobObject {
 	 *             if variant is not of the requested type
 	 */
 	public Dispatch getDispatchRef() {
-		if ((this.getvt() & VariantTypeMask) == VariantDispatch
+		if ((this.getvt() & VariantDispatch) == VariantDispatch
 				&& (this.getvt() & VariantByref) == VariantByref) {
 			return toDispatch();
 		} else {
@@ -546,7 +544,7 @@ public class Variant extends JacobObject {
 	 *             if variant is not of the requested type
 	 */
 	public double getDoubleRef() {
-		if ((this.getvt() & VariantTypeMask) == VariantDouble
+		if ((this.getvt() & VariantDouble) == VariantDouble
 				&& (this.getvt() & VariantByref) == VariantByref) {
 			return getVariantDoubleRef();
 		} else {
@@ -591,7 +589,7 @@ public class Variant extends JacobObject {
 	 *             if variant is not of the requested type
 	 */
 	public int getErrorRef() {
-		if ((this.getvt() & VariantTypeMask) == VariantError
+		if ((this.getvt() & VariantError) == VariantError
 				&& (this.getvt() & VariantByref) == VariantByref) {
 			return getVariantErrorRef();
 		} else {
@@ -623,7 +621,7 @@ public class Variant extends JacobObject {
 	 *             if variant is not of the requested type
 	 */
 	public float getFloatRef() {
-		if ((this.getvt() & VariantTypeMask) == VariantFloat
+		if ((this.getvt() & VariantFloat) == VariantFloat
 				&& (this.getvt() & VariantByref) == VariantByref) {
 			return getVariantFloatRef();
 		} else {
@@ -661,7 +659,7 @@ public class Variant extends JacobObject {
 	 *             if variant is not of the requested type
 	 */
 	public int getIntRef() {
-		if ((this.getvt() & VariantTypeMask) == VariantInt
+		if ((this.getvt() & VariantInt) == VariantInt
 				&& (this.getvt() & VariantByref) == VariantByref) {
 			return getVariantIntRef();
 		} else {
@@ -737,7 +735,7 @@ public class Variant extends JacobObject {
 	 *             if variant is not of the requested type
 	 */
 	public long getLongRef() {
-		if ((this.getvt() & VariantTypeMask) == VariantLongInt
+		if ((this.getvt() & VariantLongInt) == VariantLongInt
 				&& (this.getvt() & VariantByref) == VariantByref) {
 			return getVariantLongRef();
 		} else {
@@ -783,7 +781,7 @@ public class Variant extends JacobObject {
 	 *             if variant is not of the requested type
 	 */
 	public short getShortRef() {
-		if ((this.getvt() & VariantTypeMask) == VariantShort
+		if ((this.getvt() & VariantShort) == VariantShort
 				&& (this.getvt() & VariantByref) == VariantByref) {
 			return getVariantShortRef();
 		} else {
@@ -795,17 +793,13 @@ public class Variant extends JacobObject {
 
 	/**
 	 * 
-	 * @return string contents of the variant, null if is of type null or empty
+	 * @return string contents of the variant.
 	 * @throws IllegalStateException
 	 *             if this variant is not of type String
 	 */
 	public String getString() {
 		if (getvt() == Variant.VariantString) {
 			return getVariantString();
-		} else if (getvt() == Variant.VariantEmpty) {
-			return null;
-		} else if (getvt() == Variant.VariantNull) {
-			return null;
 		} else {
 			throw new IllegalStateException(
 					"getString() only legal on Variants of type VariantString, not "
@@ -821,7 +815,7 @@ public class Variant extends JacobObject {
 	 *             if variant is not of the requested type
 	 */
 	public String getStringRef() {
-		if ((this.getvt() & VariantTypeMask) == VariantString
+		if ((this.getvt() & VariantString) == VariantString
 				&& (this.getvt() & VariantByref) == VariantByref) {
 			return getVariantStringRef();
 		} else {
@@ -840,13 +834,13 @@ public class Variant extends JacobObject {
 	 *         Variant
 	 */
 	public Object getVariant() {
-		if ((this.getvt() & VariantTypeMask) == VariantVariant
+		if ((this.getvt() & VariantVariant) == VariantVariant
 				&& (this.getvt() & VariantByref) == VariantByref) {
 			if (JacobObject.isDebugEnabled()) {
 				JacobObject.debug("About to call getVariantVariant()");
 			}
 			Variant enclosedVariant = new Variant();
-			long enclosedVariantMemory = getVariantVariant();
+			int enclosedVariantMemory = getVariantVariant();
 			enclosedVariant.m_pVariant = enclosedVariantMemory;
 			Object enclosedVariantAsJava = enclosedVariant.toJavaObject();
 			// zero out the reference to the underlying windows memory so that
@@ -1020,7 +1014,7 @@ public class Variant extends JacobObject {
 	 * 
 	 * @return Variant one of the VT_Variant types
 	 */
-	private native long getVariantVariant();
+	private native int getVariantVariant();
 
 	/**
 	 * Reports the type of the underlying Variant object
@@ -1613,8 +1607,8 @@ public class Variant extends JacobObject {
 	 *            A object that is to be referenced by this variant. If
 	 *            objectToBeWrapped is already of type Variant, then it is used.
 	 *            If objectToBeWrapped is not Variant then
-	 *            <code>new Variant(objectToBeWrapped)</code> is called and the
-	 *            result is passed into the com layer
+	 *            <code>new Variant(objectToBeWrapped)</code> is called and
+	 *            the result is passed into the com layer
 	 * @throws IllegalArgumentException
 	 *             if inVariant = null or if inVariant is a Varint
 	 */
@@ -1880,7 +1874,6 @@ public class Variant extends JacobObject {
 	 * 
 	 * @see com.jacob.com.JacobObject#safeRelease()
 	 */
-	@Override
 	public void safeRelease() {
 		// The well known constants should not be released.
 		// Unfortunately this doesn't fix any other classes that are
@@ -2161,8 +2154,6 @@ public class Variant extends JacobObject {
 	 * <li>"null" if VariantEmpty,
 	 * <li>"null" if VariantError
 	 * <li>"null" if VariantNull
-	 * <li>"null" if Variant type didn't convert. This can happen for date
-	 * conversions where the returned value was 0.
 	 * <li>the value if we know how to describe one of that type
 	 * <li>three question marks if can't convert
 	 * 
@@ -2170,7 +2161,6 @@ public class Variant extends JacobObject {
 	 * @throws IllegalStateException
 	 *             if there is no underlying windows data structure
 	 */
-	@Override
 	public String toString() {
 		try {
 			// see if we are in a legal state
@@ -2188,11 +2178,7 @@ public class Variant extends JacobObject {
 		try {
 			Object foo = toJavaObject();
 			// rely on java objects to do the right thing
-			if (foo == null) {
-				return "null";
-			} else {
-				return foo.toString();
-			}
+			return foo.toString();
 		} catch (NotImplementedException nie) {
 			// some types do not generate a good description yet
 			return "Description not available for type: " + getvt();
