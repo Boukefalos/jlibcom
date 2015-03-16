@@ -1,6 +1,7 @@
 apply plugin: 'java'
 apply plugin: 'cpp'
 apply plugin: 'maven'
+apply plugin: 'license'
 
 repositories {
 	maven {
@@ -138,4 +139,22 @@ mainPom.withXml { provider ->
 
 jar {
 	from sourceSets.main.allSource
+}
+
+buildscript {
+	repositories {
+		jcenter()
+	}
+	dependencies {
+		classpath 'nl.javadude.gradle.plugins:license-gradle-plugin:0.11.0'
+	}
+}
+
+license {
+	header rootProject.file('HEADER.txt')
+	ext.year = Calendar.getInstance().get(Calendar.YEAR)
+	ext.name = 'Rik Veenboer'
+	ext.email = 'rik.veenboer@gmail.com'
+	ext.project = 'jlibcom'
+	include "**/*.java"
 }

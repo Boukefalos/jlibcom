@@ -1,3 +1,41 @@
+/**
+ * This file is part of jlibcom.
+ *
+ * Copyright (C) 2014 Rik Veenboer <rik.veenboer@gmail.com>
+ *
+ * jlibcom is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * jlibcom is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with jlibcom. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * This file incorporates work covered by the following copyright and
+ * permission notice:
+ * 	Copyright (c) 1999-2004 Sourceforge JACOB Project.
+ * 	All rights reserved. Originator: Dan Adler (http://danadler.com).
+ * 	Get more information about JACOB at http://sourceforge.net/projects/jacob-project
+ *
+ * 	This library is free software; you can redistribute it and/or
+ * 	modify it under the terms of the GNU Lesser General Public
+ * 	License as published by the Free Software Foundation; either
+ * 	version 2.1 of the License, or (at your option) any later version.
+ *
+ * 	This library is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * 	Lesser General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU Lesser General Public
+ * 	License along with this library; if not, write to the Free Software
+ * 	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ */
 package com.jacob.test.safearray;
 
 import junit.framework.Assert;
@@ -221,17 +259,17 @@ public class SafeArrayBasicTest extends BaseTestCase {
 	 * 
 	 * <pre>
 	 * 	 The console output will be the following without unicode support:
-	 * 	 Russian: Ð ÑƒÑÑÐºÐ¸Ð¹
+	 * 	 Russian: �? ÑƒÑ�?Ñ�?�?º�?¸�?¹
 	 * 		
 	 * 	 Expected:
-	 * 	 Russian: Русский
+	 * 	 Russian: Ру�?�?кий
 	 *</pre>
 	 */
 	public void testStringUnicode() {
 		SafeArray sa = new SafeArray(Variant.VariantString, 1);
 		sa.setString(0, "Russian: \u0420\u0443\u0441\u0441\u043A\u0438\u0439");
 		String result = sa.getString(0);
-		Assert.assertEquals("Russian: Русский", result);
+		Assert.assertEquals("Russian: Ру�?�?кий", result);
 		// System.out.println(sa.getString(0));
 	}
 
