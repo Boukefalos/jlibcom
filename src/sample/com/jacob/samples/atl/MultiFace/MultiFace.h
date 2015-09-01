@@ -40,19 +40,19 @@ extern "C"{
 #ifndef __IFace1_FWD_DEFINED__
 #define __IFace1_FWD_DEFINED__
 typedef interface IFace1 IFace1;
-#endif 	/* __IFace1_FWD_DEFINED__ */
+#endif     /* __IFace1_FWD_DEFINED__ */
 
 
 #ifndef __IFace2_FWD_DEFINED__
 #define __IFace2_FWD_DEFINED__
 typedef interface IFace2 IFace2;
-#endif 	/* __IFace2_FWD_DEFINED__ */
+#endif     /* __IFace2_FWD_DEFINED__ */
 
 
 #ifndef __IFace3_FWD_DEFINED__
 #define __IFace3_FWD_DEFINED__
 typedef interface IFace3 IFace3;
-#endif 	/* __IFace3_FWD_DEFINED__ */
+#endif     /* __IFace3_FWD_DEFINED__ */
 
 
 #ifndef __Face_FWD_DEFINED__
@@ -64,7 +64,7 @@ typedef class Face Face;
 typedef struct Face Face;
 #endif /* __cplusplus */
 
-#endif 	/* __Face_FWD_DEFINED__ */
+#endif     /* __Face_FWD_DEFINED__ */
 
 
 /* header files for imported files */
@@ -97,7 +97,7 @@ EXTERN_C const IID IID_IFace1;
         
     };
     
-#else 	/* C style interface */
+#else     /* C style interface */
 
     typedef struct IFace1Vtbl
     {
@@ -164,39 +164,39 @@ EXTERN_C const IID IID_IFace1;
 #ifdef COBJMACROS
 
 
-#define IFace1_QueryInterface(This,riid,ppvObject)	\
+#define IFace1_QueryInterface(This,riid,ppvObject)    \
     (This)->lpVtbl -> QueryInterface(This,riid,ppvObject)
 
-#define IFace1_AddRef(This)	\
+#define IFace1_AddRef(This)    \
     (This)->lpVtbl -> AddRef(This)
 
-#define IFace1_Release(This)	\
+#define IFace1_Release(This)    \
     (This)->lpVtbl -> Release(This)
 
 
-#define IFace1_GetTypeInfoCount(This,pctinfo)	\
+#define IFace1_GetTypeInfoCount(This,pctinfo)    \
     (This)->lpVtbl -> GetTypeInfoCount(This,pctinfo)
 
-#define IFace1_GetTypeInfo(This,iTInfo,lcid,ppTInfo)	\
+#define IFace1_GetTypeInfo(This,iTInfo,lcid,ppTInfo)    \
     (This)->lpVtbl -> GetTypeInfo(This,iTInfo,lcid,ppTInfo)
 
-#define IFace1_GetIDsOfNames(This,riid,rgszNames,cNames,lcid,rgDispId)	\
+#define IFace1_GetIDsOfNames(This,riid,rgszNames,cNames,lcid,rgDispId)    \
     (This)->lpVtbl -> GetIDsOfNames(This,riid,rgszNames,cNames,lcid,rgDispId)
 
-#define IFace1_Invoke(This,dispIdMember,riid,lcid,wFlags,pDispParams,pVarResult,pExcepInfo,puArgErr)	\
+#define IFace1_Invoke(This,dispIdMember,riid,lcid,wFlags,pDispParams,pVarResult,pExcepInfo,puArgErr)    \
     (This)->lpVtbl -> Invoke(This,dispIdMember,riid,lcid,wFlags,pDispParams,pVarResult,pExcepInfo,puArgErr)
 
 
-#define IFace1_get_Face1Name(This,pVal)	\
+#define IFace1_get_Face1Name(This,pVal)    \
     (This)->lpVtbl -> get_Face1Name(This,pVal)
 
-#define IFace1_put_Face1Name(This,newVal)	\
+#define IFace1_put_Face1Name(This,newVal)    \
     (This)->lpVtbl -> put_Face1Name(This,newVal)
 
 #endif /* COBJMACROS */
 
 
-#endif 	/* C style interface */
+#endif     /* C style interface */
 
 
 
@@ -225,7 +225,7 @@ void __RPC_STUB IFace1_put_Face1Name_Stub(
 
 
 
-#endif 	/* __IFace1_INTERFACE_DEFINED__ */
+#endif     /* __IFace1_INTERFACE_DEFINED__ */
 
 
 #ifndef __IFace2_INTERFACE_DEFINED__
@@ -251,7 +251,7 @@ EXTERN_C const IID IID_IFace2;
         
     };
     
-#else 	/* C style interface */
+#else     /* C style interface */
 
     typedef struct IFace2Vtbl
     {
@@ -318,39 +318,39 @@ EXTERN_C const IID IID_IFace2;
 #ifdef COBJMACROS
 
 
-#define IFace2_QueryInterface(This,riid,ppvObject)	\
+#define IFace2_QueryInterface(This,riid,ppvObject)    \
     (This)->lpVtbl -> QueryInterface(This,riid,ppvObject)
 
-#define IFace2_AddRef(This)	\
+#define IFace2_AddRef(This)    \
     (This)->lpVtbl -> AddRef(This)
 
-#define IFace2_Release(This)	\
+#define IFace2_Release(This)    \
     (This)->lpVtbl -> Release(This)
 
 
-#define IFace2_GetTypeInfoCount(This,pctinfo)	\
+#define IFace2_GetTypeInfoCount(This,pctinfo)    \
     (This)->lpVtbl -> GetTypeInfoCount(This,pctinfo)
 
-#define IFace2_GetTypeInfo(This,iTInfo,lcid,ppTInfo)	\
+#define IFace2_GetTypeInfo(This,iTInfo,lcid,ppTInfo)    \
     (This)->lpVtbl -> GetTypeInfo(This,iTInfo,lcid,ppTInfo)
 
-#define IFace2_GetIDsOfNames(This,riid,rgszNames,cNames,lcid,rgDispId)	\
+#define IFace2_GetIDsOfNames(This,riid,rgszNames,cNames,lcid,rgDispId)    \
     (This)->lpVtbl -> GetIDsOfNames(This,riid,rgszNames,cNames,lcid,rgDispId)
 
-#define IFace2_Invoke(This,dispIdMember,riid,lcid,wFlags,pDispParams,pVarResult,pExcepInfo,puArgErr)	\
+#define IFace2_Invoke(This,dispIdMember,riid,lcid,wFlags,pDispParams,pVarResult,pExcepInfo,puArgErr)    \
     (This)->lpVtbl -> Invoke(This,dispIdMember,riid,lcid,wFlags,pDispParams,pVarResult,pExcepInfo,puArgErr)
 
 
-#define IFace2_get_Face2Nam(This,pVal)	\
+#define IFace2_get_Face2Nam(This,pVal)    \
     (This)->lpVtbl -> get_Face2Nam(This,pVal)
 
-#define IFace2_put_Face2Nam(This,newVal)	\
+#define IFace2_put_Face2Nam(This,newVal)    \
     (This)->lpVtbl -> put_Face2Nam(This,newVal)
 
 #endif /* COBJMACROS */
 
 
-#endif 	/* C style interface */
+#endif     /* C style interface */
 
 
 
@@ -379,7 +379,7 @@ void __RPC_STUB IFace2_put_Face2Nam_Stub(
 
 
 
-#endif 	/* __IFace2_INTERFACE_DEFINED__ */
+#endif     /* __IFace2_INTERFACE_DEFINED__ */
 
 
 #ifndef __IFace3_INTERFACE_DEFINED__
@@ -405,7 +405,7 @@ EXTERN_C const IID IID_IFace3;
         
     };
     
-#else 	/* C style interface */
+#else     /* C style interface */
 
     typedef struct IFace3Vtbl
     {
@@ -472,39 +472,39 @@ EXTERN_C const IID IID_IFace3;
 #ifdef COBJMACROS
 
 
-#define IFace3_QueryInterface(This,riid,ppvObject)	\
+#define IFace3_QueryInterface(This,riid,ppvObject)    \
     (This)->lpVtbl -> QueryInterface(This,riid,ppvObject)
 
-#define IFace3_AddRef(This)	\
+#define IFace3_AddRef(This)    \
     (This)->lpVtbl -> AddRef(This)
 
-#define IFace3_Release(This)	\
+#define IFace3_Release(This)    \
     (This)->lpVtbl -> Release(This)
 
 
-#define IFace3_GetTypeInfoCount(This,pctinfo)	\
+#define IFace3_GetTypeInfoCount(This,pctinfo)    \
     (This)->lpVtbl -> GetTypeInfoCount(This,pctinfo)
 
-#define IFace3_GetTypeInfo(This,iTInfo,lcid,ppTInfo)	\
+#define IFace3_GetTypeInfo(This,iTInfo,lcid,ppTInfo)    \
     (This)->lpVtbl -> GetTypeInfo(This,iTInfo,lcid,ppTInfo)
 
-#define IFace3_GetIDsOfNames(This,riid,rgszNames,cNames,lcid,rgDispId)	\
+#define IFace3_GetIDsOfNames(This,riid,rgszNames,cNames,lcid,rgDispId)    \
     (This)->lpVtbl -> GetIDsOfNames(This,riid,rgszNames,cNames,lcid,rgDispId)
 
-#define IFace3_Invoke(This,dispIdMember,riid,lcid,wFlags,pDispParams,pVarResult,pExcepInfo,puArgErr)	\
+#define IFace3_Invoke(This,dispIdMember,riid,lcid,wFlags,pDispParams,pVarResult,pExcepInfo,puArgErr)    \
     (This)->lpVtbl -> Invoke(This,dispIdMember,riid,lcid,wFlags,pDispParams,pVarResult,pExcepInfo,puArgErr)
 
 
-#define IFace3_get_Face3Name(This,pVal)	\
+#define IFace3_get_Face3Name(This,pVal)    \
     (This)->lpVtbl -> get_Face3Name(This,pVal)
 
-#define IFace3_put_Face3Name(This,newVal)	\
+#define IFace3_put_Face3Name(This,newVal)    \
     (This)->lpVtbl -> put_Face3Name(This,newVal)
 
 #endif /* COBJMACROS */
 
 
-#endif 	/* C style interface */
+#endif     /* C style interface */
 
 
 
@@ -533,7 +533,7 @@ void __RPC_STUB IFace3_put_Face3Name_Stub(
 
 
 
-#endif 	/* __IFace3_INTERFACE_DEFINED__ */
+#endif     /* __IFace3_INTERFACE_DEFINED__ */
 
 
 

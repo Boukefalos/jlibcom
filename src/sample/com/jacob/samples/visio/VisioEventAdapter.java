@@ -13,56 +13,56 @@ import com.jacob.com.Variant;
  */
 public class VisioEventAdapter implements VisioEventListener {
 
-	VisioApp app = null;
+    VisioApp app = null;
 
-	public VisioEventAdapter(VisioApp pApp) {
-		app = pApp;
-		System.out.println("Event listener constructed");
-	}
+    public VisioEventAdapter(VisioApp pApp) {
+        app = pApp;
+        System.out.println("Event listener constructed");
+    }
 
-	public void BeforeQuit(Variant[] args) {
-	}
+    public void BeforeQuit(Variant[] args) {
+    }
 
-	public void DocumentChanged(Variant[] args) {
-		System.out.println("documentChanged()");
-	}
+    public void DocumentChanged(Variant[] args) {
+        System.out.println("documentChanged()");
+    }
 
-	public void DocumentCloseCanceled(Variant[] args) {
-	}
+    public void DocumentCloseCanceled(Variant[] args) {
+    }
 
-	public void DocumentCreated(Variant[] args) {
-	}
+    public void DocumentCreated(Variant[] args) {
+    }
 
-	public void DocumentOpened(Variant[] args) {
-		System.out.println("DocumentOpened()");
-	}
+    public void DocumentOpened(Variant[] args) {
+        System.out.println("DocumentOpened()");
+    }
 
-	public void DocumentSaved(Variant[] args) {
-	}
+    public void DocumentSaved(Variant[] args) {
+    }
 
-	public void DocumentSavedAs(Variant[] args) {
-	}
+    public void DocumentSavedAs(Variant[] args) {
+    }
 
-	public Variant QueryCancelDocumentClose(Variant[] args) {
-		System.out.println("QueryCancelDocumentClose()");
-		return new Variant(false);
-	}
+    public Variant QueryCancelDocumentClose(Variant[] args) {
+        System.out.println("QueryCancelDocumentClose()");
+        return new Variant(false);
+    }
 
-	/**
-	 * we don't actually let it quit. We block it so that we don't have to
-	 * relaunch when we look at a new document
-	 */
-	public Variant QueryCancelQuit(Variant[] args) {
-		// these may throw VisioException
-		System.out
-				.println("Saving document, hiding and telling visio not to quit");
-		try {
-			app.save();
-			app.setVisible(false);
-		} catch (VisioException ve) {
-			System.out.println("ailed to openFile()");
-			ve.printStackTrace();
-		}
-		return new Variant(true);
-	}
+    /**
+     * we don't actually let it quit. We block it so that we don't have to
+     * relaunch when we look at a new document
+     */
+    public Variant QueryCancelQuit(Variant[] args) {
+        // these may throw VisioException
+        System.out
+                .println("Saving document, hiding and telling visio not to quit");
+        try {
+            app.save();
+            app.setVisible(false);
+        } catch (VisioException ve) {
+            System.out.println("ailed to openFile()");
+            ve.printStackTrace();
+        }
+        return new Variant(true);
+    }
 }

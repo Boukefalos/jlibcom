@@ -97,7 +97,7 @@ JNIEXPORT void JNICALL Java_com_jacob_com_DispatchProxy_release
   IStream *ps =  extractStream(env, _this);
   if (ps) {
     ps->Release();
-		jclass argClass = env->GetObjectClass(_this);
+        jclass argClass = env->GetObjectClass(_this);
     jfieldID ajf = env->GetFieldID( argClass, "m_pStream", "J");
     env->SetLongField(_this, ajf, 0ll);
   }

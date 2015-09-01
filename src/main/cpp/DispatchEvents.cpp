@@ -74,32 +74,32 @@ JNIEXPORT void JNICALL Java_com_jacob_com_DispatchEvents_init3
     jstring _progid, 
     jstring _typelib)
 {
-	USES_CONVERSION;
+    USES_CONVERSION;
 
   if (_typelib != NULL && _progid == NULL){
-  	// both are required if typelib exists
-  	ThrowComFail(env,"TypeLib was specified but no program id was",-1);
-  	return;
+      // both are required if typelib exists
+      ThrowComFail(env,"TypeLib was specified but no program id was",-1);
+      return;
   }
   
   BSTR typeLib = NULL;
   if (_typelib != NULL){
-  	  // why is this UTF instead of unicode? Then we could probably drop the A2W
-	  const char *typelib = env->GetStringUTFChars(_typelib, NULL);
-	  typeLib = A2W(typelib);
-	  // should we call env->ReleaseStringUTFChars(,) to free the memory like we do everywhere lese?
-	  
-	  //printf("we have a type lib %ls\n",typeLib);
+        // why is this UTF instead of unicode? Then we could probably drop the A2W
+      const char *typelib = env->GetStringUTFChars(_typelib, NULL);
+      typeLib = A2W(typelib);
+      // should we call env->ReleaseStringUTFChars(,) to free the memory like we do everywhere lese?
+      
+      //printf("we have a type lib %ls\n",typeLib);
   }
 
   // find progid if any
   LPOLESTR bsProgId = NULL;
   if (_progid!=NULL) {
-    	// why is this UTF instead of unicode?  Then we could probably drop the A2W
-    	const char *progid = env->GetStringUTFChars(_progid, NULL);
-		bsProgId = A2W(progid);
-	  // should we call env->ReleaseStringUTFChars(,) to free the memory like we do everywhere lese?
-		//printf("we have an applicaton %ls\n",bsProgId);
+        // why is this UTF instead of unicode?  Then we could probably drop the A2W
+        const char *progid = env->GetStringUTFChars(_progid, NULL);
+        bsProgId = A2W(progid);
+      // should we call env->ReleaseStringUTFChars(,) to free the memory like we do everywhere lese?
+        //printf("we have an applicaton %ls\n",bsProgId);
   }
   
   // get the IDispatch for the source object
@@ -119,15 +119,15 @@ JNIEXPORT void JNICALL Java_com_jacob_com_DispatchEvents_init3
   DISPID *mIDs;
   int n_EventMethods;
   if (_typelib == NULL){
-	  if (!GetEventIID(pUnk, &eventIID, &mNames, &mIDs, &n_EventMethods,bsProgId)) {
-    	ThrowComFail(env, "Can't find event iid", -1);
-	    return;
-	  }
+      if (!GetEventIID(pUnk, &eventIID, &mNames, &mIDs, &n_EventMethods,bsProgId)) {
+        ThrowComFail(env, "Can't find event iid", -1);
+        return;
+      }
   } else {
-	  if (!GetEventIIDForTypeLib(typeLib, &eventIID, &mNames, &mIDs, &n_EventMethods,bsProgId)) {
-    	ThrowComFail(env, "Can't find event iid for type lib", -1);
-	    return;
-	  }
+      if (!GetEventIIDForTypeLib(typeLib, &eventIID, &mNames, &mIDs, &n_EventMethods,bsProgId)) {
+        ThrowComFail(env, "Can't find event iid for type lib", -1);
+        return;
+      }
   }
 
   // hook up to the default source iid
@@ -153,10 +153,10 @@ JNIEXPORT void JNICALL Java_com_jacob_com_DispatchEvents_release
 {
   EventProxy *ep = extractProxy(env, _this);
   if (ep) {
-	// Disconnect must be called to reduce the ref count to the EventProxy otherwise
-	// the destructor will never be called (to actually do the disconnect)
-	ep->Disconnect(); // SF 3412922
-  	// this is the line that blows up in IETest
+    // Disconnect must be called to reduce the ref count to the EventProxy otherwise
+    // the destructor will never be called (to actually do the disconnect)
+    ep->Disconnect(); // SF 3412922
+      // this is the line that blows up in IETest
     ep->Release();
     putProxy(env, _this, NULL);
   }
@@ -219,15 +219,15 @@ BOOL GetEventIID(IUnknown *m_pObject, IID* piid,
   {
     //printf("got IProvideClassInfo\n");
     ATLASSERT(pPCI != NULL);
-		HRESULT hr = pPCI->GetClassInfo(&pClassInfo);
+        HRESULT hr = pPCI->GetClassInfo(&pClassInfo);
     pPCI->Release();
     if (!SUCCEEDED(hr)) return false;
   }
   else if (getClassInfoFromProgId(bsProgId,&pClassInfo)) {
-	}
-	else  {
+    }
+    else  {
     printf("GetEventIID: couldn't get IProvideClassInfo\n");
-		return false;
+        return false;
   }
 
   return MapEventIIDs(piid, mNames, mIDs, nmeth, bsProgId, pClassInfo);
@@ -249,7 +249,7 @@ BOOL MapEventIIDs(IID* piid,
         int nFlags;
         HREFTYPE hRefType;
 
-		//printf("MapEventIIDs: looking at %d class attribute impl types \n");
+        //printf("MapEventIIDs: looking at %d class attribute impl types \n");
         for (unsigned int i = 0; i < pClassAttr->cImplTypes; i++)
         {
           if (SUCCEEDED(pClassInfo->GetImplTypeFlags(i, &nFlags)) &&
@@ -300,25 +300,25 @@ BOOL getClassInfoFromProgId(LPOLESTR bsProgId,LPTYPEINFO *pClassInfo)
   LONG lVal;
   lVal = RegOpenKeyEx(HKEY_LOCAL_MACHINE,_T("SOFTWARE"),0,KEY_READ,&keySoftware);
   if (lVal==ERROR_SUCCESS) {
-		lVal = RegOpenKeyEx(keySoftware,_T("Classes"),0,KEY_READ,&keyClasses);
-		if (lVal==ERROR_SUCCESS) {
-			lVal = RegOpenKeyEx(keyClasses,_T("CLSID"),0,KEY_READ,&keyCLSID);
-			if (lVal==ERROR_SUCCESS) {
-				_TCHAR *tsProgId = W2T(bsProgId);
-				lVal = RegOpenKeyEx(keyCLSID,tsProgId,0,KEY_READ,&keyXXXX);
-				if (lVal==ERROR_SUCCESS) {
-					lVal = RegOpenKeyEx(keyXXXX,_T("TypeLib"),0,KEY_READ,&keyTypeLib);
-					if (lVal==ERROR_SUCCESS) {
-						lVal = RegQueryValueExA(keyTypeLib,NULL,NULL,&dwType,abData,&dwCountData);
-						RegCloseKey(keyTypeLib);
-				  }
-					RegCloseKey(keyXXXX);
-			  }
-				RegCloseKey(keyCLSID);
-			}
-			RegCloseKey(keyClasses);
-		}
-		RegCloseKey(keySoftware);
+        lVal = RegOpenKeyEx(keySoftware,_T("Classes"),0,KEY_READ,&keyClasses);
+        if (lVal==ERROR_SUCCESS) {
+            lVal = RegOpenKeyEx(keyClasses,_T("CLSID"),0,KEY_READ,&keyCLSID);
+            if (lVal==ERROR_SUCCESS) {
+                _TCHAR *tsProgId = W2T(bsProgId);
+                lVal = RegOpenKeyEx(keyCLSID,tsProgId,0,KEY_READ,&keyXXXX);
+                if (lVal==ERROR_SUCCESS) {
+                    lVal = RegOpenKeyEx(keyXXXX,_T("TypeLib"),0,KEY_READ,&keyTypeLib);
+                    if (lVal==ERROR_SUCCESS) {
+                        lVal = RegQueryValueExA(keyTypeLib,NULL,NULL,&dwType,abData,&dwCountData);
+                        RegCloseKey(keyTypeLib);
+                  }
+                    RegCloseKey(keyXXXX);
+              }
+                RegCloseKey(keyCLSID);
+            }
+            RegCloseKey(keyClasses);
+        }
+        RegCloseKey(keySoftware);
   }
   if (lVal!=ERROR_SUCCESS) return false;
   BSTR bsLibId = A2BSTR((char*)abData);
@@ -344,7 +344,7 @@ BOOL getClassInfoFromProgIdTypeLib(BSTR typeLib, LPOLESTR bsProgId, LPTYPEINFO *
   if (FAILED(StringFromCLSID(clsid,&bsProgId))) return false;
 
   ITypeLib* pITypeLib;
-  if (FAILED(LoadTypeLib(typeLib, &pITypeLib)))	return false;
+  if (FAILED(LoadTypeLib(typeLib, &pITypeLib)))    return false;
 
   //Find ITypeInfo for coclass.
   pITypeLib->GetTypeInfoOfGuid(clsid, pClassInfo);
@@ -358,9 +358,9 @@ BOOL GetEventIIDForTypeLib(BSTR typeLib, IID* piid,
   LPTYPEINFO pClassInfo = NULL;
   if(getClassInfoFromProgIdTypeLib(typeLib, bsProgId,&pClassInfo))
   {
-  	if (pClassInfo == NULL){
-  		printf("we had a successful return but pClassInfo is null\n");
-  	}
+      if (pClassInfo == NULL){
+          printf("we had a successful return but pClassInfo is null\n");
+      }
     return MapEventIIDs(piid, mNames, mIDs, nmeth, bsProgId, pClassInfo);
   }
   else

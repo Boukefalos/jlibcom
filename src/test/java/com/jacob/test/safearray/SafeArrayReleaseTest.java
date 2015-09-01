@@ -18,23 +18,23 @@
  *
  * This file incorporates work covered by the following copyright and
  * permission notice:
- * 	Copyright (c) 1999-2004 Sourceforge JACOB Project.
- * 	All rights reserved. Originator: Dan Adler (http://danadler.com).
- * 	Get more information about JACOB at http://sourceforge.net/projects/jacob-project
+ *     Copyright (c) 1999-2004 Sourceforge JACOB Project.
+ *     All rights reserved. Originator: Dan Adler (http://danadler.com).
+ *     Get more information about JACOB at http://sourceforge.net/projects/jacob-project
  *
- * 	This library is free software; you can redistribute it and/or
- * 	modify it under the terms of the GNU Lesser General Public
- * 	License as published by the Free Software Foundation; either
- * 	version 2.1 of the License, or (at your option) any later version.
+ *     This library is free software; you can redistribute it and/or
+ *     modify it under the terms of the GNU Lesser General Public
+ *     License as published by the Free Software Foundation; either
+ *     version 2.1 of the License, or (at your option) any later version.
  *
- * 	This library is distributed in the hope that it will be useful,
- * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
- * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * 	Lesser General Public License for more details.
+ *     This library is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *     Lesser General Public License for more details.
  *
- * 	You should have received a copy of the GNU Lesser General Public
- * 	License along with this library; if not, write to the Free Software
- * 	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ *     You should have received a copy of the GNU Lesser General Public
+ *     License along with this library; if not, write to the Free Software
+ *     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 package com.jacob.test.safearray;
 
@@ -91,37 +91,37 @@ import com.jacob.test.BaseTestCase;
  */
 
 public class SafeArrayReleaseTest extends BaseTestCase {
-	final static int MAX = 300;
+    final static int MAX = 300;
 
-	/**
-	 * verifies the release works on SafeArray
-	 */
-	public void testSaveArrayRelease() {
-		int count;
-		System.out.println("Starting test for max = " + MAX);
-		for (count = 1; count < MAX; count++) {
-			int i = 0;
-			try {
-				ComThread.InitMTA();
-				for (i = 0; i < count; i++) {
-					SafeArray a1 = new SafeArray(Variant.VariantVariant, 2);
-					a1.setVariant(0, new Variant("foo"));
-					a1.setVariant(1, new Variant("bar"));
-					Variant v = new Variant(a1);
-					SafeArray a2 = v.toSafeArray(true);
-					if (a2 == null) {
-						System.out.println("got null back from toSafeArray()");
-					}
-				}
-				ComThread.Release();
-				System.gc();
-				// System.out.print(".");
-			} catch (Exception e) {
-				fail("Test fails with i = " + i + " (max = " + MAX + ")");
-			}
-		}
-		System.gc();
-		System.out.println("\nTest ends with count = " + count + " (max = "
-				+ MAX + ")");
-	}
+    /**
+     * verifies the release works on SafeArray
+     */
+    public void testSaveArrayRelease() {
+        int count;
+        System.out.println("Starting test for max = " + MAX);
+        for (count = 1; count < MAX; count++) {
+            int i = 0;
+            try {
+                ComThread.InitMTA();
+                for (i = 0; i < count; i++) {
+                    SafeArray a1 = new SafeArray(Variant.VariantVariant, 2);
+                    a1.setVariant(0, new Variant("foo"));
+                    a1.setVariant(1, new Variant("bar"));
+                    Variant v = new Variant(a1);
+                    SafeArray a2 = v.toSafeArray(true);
+                    if (a2 == null) {
+                        System.out.println("got null back from toSafeArray()");
+                    }
+                }
+                ComThread.Release();
+                System.gc();
+                // System.out.print(".");
+            } catch (Exception e) {
+                fail("Test fails with i = " + i + " (max = " + MAX + ")");
+            }
+        }
+        System.gc();
+        System.out.println("\nTest ends with count = " + count + " (max = "
+                + MAX + ")");
+    }
 }

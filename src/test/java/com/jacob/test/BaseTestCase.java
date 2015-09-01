@@ -18,23 +18,23 @@
  *
  * This file incorporates work covered by the following copyright and
  * permission notice:
- * 	Copyright (c) 1999-2004 Sourceforge JACOB Project.
- * 	All rights reserved. Originator: Dan Adler (http://danadler.com).
- * 	Get more information about JACOB at http://sourceforge.net/projects/jacob-project
+ *     Copyright (c) 1999-2004 Sourceforge JACOB Project.
+ *     All rights reserved. Originator: Dan Adler (http://danadler.com).
+ *     Get more information about JACOB at http://sourceforge.net/projects/jacob-project
  *
- * 	This library is free software; you can redistribute it and/or
- * 	modify it under the terms of the GNU Lesser General Public
- * 	License as published by the Free Software Foundation; either
- * 	version 2.1 of the License, or (at your option) any later version.
+ *     This library is free software; you can redistribute it and/or
+ *     modify it under the terms of the GNU Lesser General Public
+ *     License as published by the Free Software Foundation; either
+ *     version 2.1 of the License, or (at your option) any later version.
  *
- * 	This library is distributed in the hope that it will be useful,
- * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
- * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * 	Lesser General Public License for more details.
+ *     This library is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *     Lesser General Public License for more details.
  *
- * 	You should have received a copy of the GNU Lesser General Public
- * 	License along with this library; if not, write to the Free Software
- * 	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ *     You should have received a copy of the GNU Lesser General Public
+ *     License along with this library; if not, write to the Free Software
+ *     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 package com.jacob.test;
 
@@ -61,152 +61,152 @@ import com.jacob.com.JacobObject;
  */
 public class BaseTestCase extends TestCase {
 
-	protected void setUp() {
-		// verify we have run with the dll in the lib path
-		try {
-			JacobObject foo = new JacobObject();
-			if (foo == null) {
-				fail("Failed basic sanity test: Can't create JacobObject (-D<java.library.path=xxx>)");
-			}
-		} catch (UnsatisfiedLinkError ule) {
-			fail("Did you remember to run with the jacob.dll in the libpath ?");
-		}
-	}
+    protected void setUp() {
+        // verify we have run with the dll in the lib path
+        try {
+            JacobObject foo = new JacobObject();
+            if (foo == null) {
+                fail("Failed basic sanity test: Can't create JacobObject (-D<java.library.path=xxx>)");
+            }
+        } catch (UnsatisfiedLinkError ule) {
+            fail("Did you remember to run with the jacob.dll in the libpath ?");
+        }
+    }
 
-	/**
-	 * this test exists just to test the setup.
-	 */
-	public void testSetup() {
-		JacobObject foo = new JacobObject();
-		assertNotNull(foo);
-	}
+    /**
+     * this test exists just to test the setup.
+     */
+    public void testSetup() {
+        JacobObject foo = new JacobObject();
+        assertNotNull(foo);
+    }
 
-	/**
-	 * 
-	 * @return a simple VB script that generates the result "3"
-	 */
-	public String getSampleVPScriptForEval() {
-		return "1+(2*4)-3";
+    /**
+     * 
+     * @return a simple VB script that generates the result "3"
+     */
+    public String getSampleVPScriptForEval() {
+        return "1+(2*4)-3";
 
-	}
+    }
 
-	/**
-	 * Converts the class name into a path and appends the resource name. Used
-	 * to derive the path to a resource in the file system where the resource is
-	 * co-located with the referenced class.
-	 * 
-	 * @param resourceName
-	 * @param classInSamePackageAsResource
-	 * @return a class loader compatible fully qualified file system path to a
-	 *         resource
-	 */
-	@SuppressWarnings("unchecked")
-	private String getJavaFilePathToPackageResource(String resourceName,
-			Class classInSamePackageAsResource) {
+    /**
+     * Converts the class name into a path and appends the resource name. Used
+     * to derive the path to a resource in the file system where the resource is
+     * co-located with the referenced class.
+     * 
+     * @param resourceName
+     * @param classInSamePackageAsResource
+     * @return a class loader compatible fully qualified file system path to a
+     *         resource
+     */
+    @SuppressWarnings("unchecked")
+    private String getJavaFilePathToPackageResource(String resourceName,
+            Class classInSamePackageAsResource) {
 
-		String classPackageName = classInSamePackageAsResource.getName();
-		int i = classPackageName.lastIndexOf('.');
-		if (i == -1) {
-			classPackageName = "";
-		} else {
-			classPackageName = classPackageName.substring(0, i);
-		}
+        String classPackageName = classInSamePackageAsResource.getName();
+        int i = classPackageName.lastIndexOf('.');
+        if (i == -1) {
+            classPackageName = "";
+        } else {
+            classPackageName = classPackageName.substring(0, i);
+        }
 
-		// change all "." to ^ for later conversion to "/" so we can append
-		// resource names with "."
-		classPackageName = classPackageName.replace('.', '^');
-		System.out.println("classPackageName: " + classPackageName);
-		String fullPathToResource;
-		if (classPackageName.length() > 0) {
-			fullPathToResource = classPackageName + "^" + resourceName;
-		} else {
-			fullPathToResource = resourceName;
-		}
+        // change all "." to ^ for later conversion to "/" so we can append
+        // resource names with "."
+        classPackageName = classPackageName.replace('.', '^');
+        System.out.println("classPackageName: " + classPackageName);
+        String fullPathToResource;
+        if (classPackageName.length() > 0) {
+            fullPathToResource = classPackageName + "^" + resourceName;
+        } else {
+            fullPathToResource = resourceName;
+        }
 
-		fullPathToResource = fullPathToResource.replace('^', '/');
-		System.out.println("fullPathToResource: " + fullPathToResource);
+        fullPathToResource = fullPathToResource.replace('^', '/');
+        System.out.println("fullPathToResource: " + fullPathToResource);
 
-		URL urlToLibrary = classInSamePackageAsResource.getClassLoader()
-				.getResource(fullPathToResource);
-		assertNotNull("URL to resource " + resourceName
-				+ " should not be null."
-				+ " You probably need to add 'unittest' to the"
-				+ " classpath so the tests can find resources", urlToLibrary);
-		String fullPathToResourceAsFile = urlToLibrary.getFile();
-		System.out.println("url to library: " + urlToLibrary);
-		System.out.println("fullPathToResourceAsFile: "
-				+ fullPathToResourceAsFile);
+        URL urlToLibrary = classInSamePackageAsResource.getClassLoader()
+                .getResource(fullPathToResource);
+        assertNotNull("URL to resource " + resourceName
+                + " should not be null."
+                + " You probably need to add 'unittest' to the"
+                + " classpath so the tests can find resources", urlToLibrary);
+        String fullPathToResourceAsFile = urlToLibrary.getFile();
+        System.out.println("url to library: " + urlToLibrary);
+        System.out.println("fullPathToResourceAsFile: "
+                + fullPathToResourceAsFile);
 
-		return fullPathToResourceAsFile;
-	}
+        return fullPathToResourceAsFile;
+    }
 
-	/**
-	 * Converts the class name into a path and appends the resource name. Used
-	 * to derive the path to a resource in the file system where the resource is
-	 * co-located with the referenced class.
-	 * 
-	 * @param resourceName
-	 * @param classInSamePackageAsResource
-	 * @return returns the path in the file system of the requested resource in
-	 *         windows c compatible format
-	 */
-	@SuppressWarnings("unchecked")
-	public String getWindowsFilePathToPackageResource(String resourceName,
-			Class classInSamePackageAsResource) {
-		String javaFilePath = getJavaFilePathToPackageResource(resourceName,
-				classInSamePackageAsResource);
-		javaFilePath = javaFilePath.replace('/', '\\');
-		return javaFilePath.substring(1);
-	}
+    /**
+     * Converts the class name into a path and appends the resource name. Used
+     * to derive the path to a resource in the file system where the resource is
+     * co-located with the referenced class.
+     * 
+     * @param resourceName
+     * @param classInSamePackageAsResource
+     * @return returns the path in the file system of the requested resource in
+     *         windows c compatible format
+     */
+    @SuppressWarnings("unchecked")
+    public String getWindowsFilePathToPackageResource(String resourceName,
+            Class classInSamePackageAsResource) {
+        String javaFilePath = getJavaFilePathToPackageResource(resourceName,
+                classInSamePackageAsResource);
+        javaFilePath = javaFilePath.replace('/', '\\');
+        return javaFilePath.substring(1);
+    }
 
-	/**
-	 * 
-	 * @param resourceName
-	 * @param classInSamePackageAsResource
-	 * @return a resource located in the same package as the passed in class
-	 */
-	@SuppressWarnings( { "unused", "unchecked" })
-	private Object getPackageResource(String resourceName,
-			Class classInSamePackageAsResource) {
-		String fullPathToResource = getJavaFilePathToPackageResource(
-				resourceName, classInSamePackageAsResource);
-		ClassLoader localClassLoader = classInSamePackageAsResource
-				.getClassLoader();
-		if (null == localClassLoader) {
-			return ClassLoader.getSystemResource(fullPathToResource);
-		} else {
-			return localClassLoader.getResource(fullPathToResource);
-		}
-	}
+    /**
+     * 
+     * @param resourceName
+     * @param classInSamePackageAsResource
+     * @return a resource located in the same package as the passed in class
+     */
+    @SuppressWarnings( { "unused", "unchecked" })
+    private Object getPackageResource(String resourceName,
+            Class classInSamePackageAsResource) {
+        String fullPathToResource = getJavaFilePathToPackageResource(
+                resourceName, classInSamePackageAsResource);
+        ClassLoader localClassLoader = classInSamePackageAsResource
+                .getClassLoader();
+        if (null == localClassLoader) {
+            return ClassLoader.getSystemResource(fullPathToResource);
+        } else {
+            return localClassLoader.getResource(fullPathToResource);
+        }
+    }
 
-	/**
-	 * load a library from same place in the file system that the class was
-	 * loaded from.
-	 * <p>
-	 * This is an attempt to let unit tests run without having to run regsvr32.
-	 * 
-	 * @param libraryName
-	 * @param classInSamePackageAsResource
-	 */
-	@SuppressWarnings( { "unchecked", "unused" })
-	private void loadLibraryFromClassPackage(String libraryName,
-			Class classInSamePackageAsResource) {
-		String libraryNameWithSuffix = "";
-		String fullLibraryNameWithPath = "";
-		if (libraryName != null && libraryName.endsWith("dll")) {
-			libraryNameWithSuffix = libraryName;
-		} else if (libraryName != null) {
-			libraryNameWithSuffix = libraryName + ".dll";
-		} else {
-			fail("can't create full library name " + libraryName);
-		}
-		// generate the path the classloader would use to find this on the
-		// classpath
-		fullLibraryNameWithPath = getJavaFilePathToPackageResource(
-				libraryNameWithSuffix, classInSamePackageAsResource);
-		System.load(fullLibraryNameWithPath);
-		// requires that the dll be on the library path
-		// System.loadLibrary(fullLibraryNameWithPath);
-	}
+    /**
+     * load a library from same place in the file system that the class was
+     * loaded from.
+     * <p>
+     * This is an attempt to let unit tests run without having to run regsvr32.
+     * 
+     * @param libraryName
+     * @param classInSamePackageAsResource
+     */
+    @SuppressWarnings( { "unchecked", "unused" })
+    private void loadLibraryFromClassPackage(String libraryName,
+            Class classInSamePackageAsResource) {
+        String libraryNameWithSuffix = "";
+        String fullLibraryNameWithPath = "";
+        if (libraryName != null && libraryName.endsWith("dll")) {
+            libraryNameWithSuffix = libraryName;
+        } else if (libraryName != null) {
+            libraryNameWithSuffix = libraryName + ".dll";
+        } else {
+            fail("can't create full library name " + libraryName);
+        }
+        // generate the path the classloader would use to find this on the
+        // classpath
+        fullLibraryNameWithPath = getJavaFilePathToPackageResource(
+                libraryNameWithSuffix, classInSamePackageAsResource);
+        System.load(fullLibraryNameWithPath);
+        // requires that the dll be on the library path
+        // System.loadLibrary(fullLibraryNameWithPath);
+    }
 
 }

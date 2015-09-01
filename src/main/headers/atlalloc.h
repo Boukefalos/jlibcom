@@ -22,16 +22,16 @@ namespace ATL
 {
 
 /*
-This is	more than a	little unsatisfying. /Wp64 warns when we convert a size_t to an	int
-because	it knows such a	conversion won't port.
-But, when we have overloaded templates,	there may well exist both conversions and we need
-to fool	the	warning	into not firing	on 32 bit builds
+This is    more than a    little unsatisfying. /Wp64 warns when we convert a size_t to an    int
+because    it knows such a    conversion won't port.
+But, when we have overloaded templates,    there may well exist both conversions and we need
+to fool    the    warning    into not firing    on 32 bit builds
 */
 #if !defined(_ATL_W64)
-#if !defined(__midl) &&	(defined(_X86_)	|| defined(_M_IX86))
-#define	_ATL_W64 __w64
+#if !defined(__midl) &&    (defined(_X86_)    || defined(_M_IX86))
+#define    _ATL_W64 __w64
 #else
-#define	_ATL_W64
+#define    _ATL_W64
 #endif
 #endif
 
@@ -46,203 +46,203 @@ template<>
 class AtlLimits<int _ATL_W64>
 {
 public:
-	static const int _Min=INT_MIN;
-	static const int _Max=INT_MAX;
+    static const int _Min=INT_MIN;
+    static const int _Max=INT_MAX;
 };
 
 template<>
 class AtlLimits<unsigned int _ATL_W64>
 {
 public:
-	static const unsigned int _Min=0;
-	static const unsigned int _Max=UINT_MAX;
+    static const unsigned int _Min=0;
+    static const unsigned int _Max=UINT_MAX;
 };
 
 template<>
 class AtlLimits<long _ATL_W64>
 {
 public:
-	static const long _Min=LONG_MIN;
-	static const long _Max=LONG_MAX;
+    static const long _Min=LONG_MIN;
+    static const long _Max=LONG_MAX;
 };
 
 template<>
 class AtlLimits<unsigned long _ATL_W64>
 {
 public:
-	static const unsigned long _Min=0;
-	static const unsigned long _Max=ULONG_MAX;
+    static const unsigned long _Min=0;
+    static const unsigned long _Max=ULONG_MAX;
 };
 
 template<>
 class AtlLimits<long long>
 {
 public:
-	static const long long _Min=LLONG_MIN;
-	static const long long _Max=LLONG_MAX;
+    static const long long _Min=LLONG_MIN;
+    static const long long _Max=LLONG_MAX;
 };
 
 template<>
 class AtlLimits<unsigned long long>
 {
 public:
-	static const unsigned long long _Min=0;
-	static const unsigned long long _Max=ULLONG_MAX;
+    static const unsigned long long _Min=0;
+    static const unsigned long long _Max=ULLONG_MAX;
 };
 
 /* generic version */
 template<typename T>
 inline HRESULT AtlAdd(
-	_Out_ T* ptResult,
-	_In_ T tLeft,
-	_In_ T tRight)
+    _Out_ T* ptResult,
+    _In_ T tLeft,
+    _In_ T tRight)
 {
-	if(::ATL::AtlLimits<T>::_Max-tLeft < tRight)
-	{
-		return HRESULT_FROM_WIN32(ERROR_ARITHMETIC_OVERFLOW);
-	}
-	*ptResult= tLeft + tRight;
-	return S_OK;
+    if(::ATL::AtlLimits<T>::_Max-tLeft < tRight)
+    {
+        return HRESULT_FROM_WIN32(ERROR_ARITHMETIC_OVERFLOW);
+    }
+    *ptResult= tLeft + tRight;
+    return S_OK;
 }
 
 /* generic but compariatively slow version */
 template<typename T>
 inline HRESULT AtlMultiply(
-	_Out_ T* ptResult,
-	_In_ T tLeft,
-	_In_ T tRight)
+    _Out_ T* ptResult,
+    _In_ T tLeft,
+    _In_ T tRight)
 {
-	/* avoid divide 0 */
-	if(tLeft==0)
-	{
-		*ptResult=0;
-		return S_OK;
-	}
-	if(::ATL::AtlLimits<T>::_Max/tLeft < tRight)
-	{
-		return HRESULT_FROM_WIN32(ERROR_ARITHMETIC_OVERFLOW);
-	}
-	*ptResult= tLeft * tRight;
-	return S_OK;
+    /* avoid divide 0 */
+    if(tLeft==0)
+    {
+        *ptResult=0;
+        return S_OK;
+    }
+    if(::ATL::AtlLimits<T>::_Max/tLeft < tRight)
+    {
+        return HRESULT_FROM_WIN32(ERROR_ARITHMETIC_OVERFLOW);
+    }
+    *ptResult= tLeft * tRight;
+    return S_OK;
 }
 
-/* fast	version	for	32 bit integers	*/
+/* fast    version    for    32 bit integers    */
 template<>
 inline HRESULT AtlMultiply(
-	_Out_ int _ATL_W64 *piResult,
-	_In_ int _ATL_W64 iLeft,
-	_In_ int _ATL_W64 iRight)
+    _Out_ int _ATL_W64 *piResult,
+    _In_ int _ATL_W64 iLeft,
+    _In_ int _ATL_W64 iRight)
 {
-	__int64 i64Result=static_cast<__int64>(iLeft) * static_cast<__int64>(iRight);
-	if(i64Result>INT_MAX || i64Result < INT_MIN)
-	{
-		return HRESULT_FROM_WIN32(ERROR_ARITHMETIC_OVERFLOW);
-	}
-	*piResult=static_cast<int _ATL_W64>(i64Result);
-	return S_OK;
-}
-
-template<>
-inline HRESULT AtlMultiply(
-	_Out_ unsigned int _ATL_W64 *piResult,
-	_In_ unsigned int _ATL_W64 iLeft,
-	_In_ unsigned int _ATL_W64 iRight)
-{
-	unsigned __int64 i64Result=static_cast<unsigned __int64>(iLeft) * static_cast<unsigned __int64>(iRight);
-	if(i64Result>UINT_MAX)
-	{
-		return HRESULT_FROM_WIN32(ERROR_ARITHMETIC_OVERFLOW);
-	}
-	*piResult=static_cast<unsigned int _ATL_W64>(i64Result);
-	return S_OK;
+    __int64 i64Result=static_cast<__int64>(iLeft) * static_cast<__int64>(iRight);
+    if(i64Result>INT_MAX || i64Result < INT_MIN)
+    {
+        return HRESULT_FROM_WIN32(ERROR_ARITHMETIC_OVERFLOW);
+    }
+    *piResult=static_cast<int _ATL_W64>(i64Result);
+    return S_OK;
 }
 
 template<>
 inline HRESULT AtlMultiply(
-	_Out_ long _ATL_W64 *piResult,
-	_In_ long _ATL_W64 iLeft,
-	_In_ long _ATL_W64 iRight)
+    _Out_ unsigned int _ATL_W64 *piResult,
+    _In_ unsigned int _ATL_W64 iLeft,
+    _In_ unsigned int _ATL_W64 iRight)
 {
-	__int64 i64Result=static_cast<__int64>(iLeft) * static_cast<__int64>(iRight);
-	if(i64Result>LONG_MAX || i64Result < LONG_MIN)
-	{
-		return HRESULT_FROM_WIN32(ERROR_ARITHMETIC_OVERFLOW);
-	}
-	*piResult=static_cast<long _ATL_W64>(i64Result);
-	return S_OK;
+    unsigned __int64 i64Result=static_cast<unsigned __int64>(iLeft) * static_cast<unsigned __int64>(iRight);
+    if(i64Result>UINT_MAX)
+    {
+        return HRESULT_FROM_WIN32(ERROR_ARITHMETIC_OVERFLOW);
+    }
+    *piResult=static_cast<unsigned int _ATL_W64>(i64Result);
+    return S_OK;
 }
 
 template<>
 inline HRESULT AtlMultiply(
-	_Out_ unsigned long _ATL_W64 *piResult,
-	_In_ unsigned long _ATL_W64 iLeft,
-	_In_ unsigned long _ATL_W64 iRight)
+    _Out_ long _ATL_W64 *piResult,
+    _In_ long _ATL_W64 iLeft,
+    _In_ long _ATL_W64 iRight)
 {
-	unsigned __int64 i64Result=static_cast<unsigned __int64>(iLeft) * static_cast<unsigned __int64>(iRight);
-	if(i64Result>ULONG_MAX)
-	{
-		return HRESULT_FROM_WIN32(ERROR_ARITHMETIC_OVERFLOW);
-	}
-	*piResult=static_cast<unsigned long _ATL_W64>(i64Result);
-	return S_OK;
+    __int64 i64Result=static_cast<__int64>(iLeft) * static_cast<__int64>(iRight);
+    if(i64Result>LONG_MAX || i64Result < LONG_MIN)
+    {
+        return HRESULT_FROM_WIN32(ERROR_ARITHMETIC_OVERFLOW);
+    }
+    *piResult=static_cast<long _ATL_W64>(i64Result);
+    return S_OK;
+}
+
+template<>
+inline HRESULT AtlMultiply(
+    _Out_ unsigned long _ATL_W64 *piResult,
+    _In_ unsigned long _ATL_W64 iLeft,
+    _In_ unsigned long _ATL_W64 iRight)
+{
+    unsigned __int64 i64Result=static_cast<unsigned __int64>(iLeft) * static_cast<unsigned __int64>(iRight);
+    if(i64Result>ULONG_MAX)
+    {
+        return HRESULT_FROM_WIN32(ERROR_ARITHMETIC_OVERFLOW);
+    }
+    *piResult=static_cast<unsigned long _ATL_W64>(i64Result);
+    return S_OK;
 }
 
 template <typename T>
 inline T AtlMultiplyThrow(
-	_In_ T tLeft,
-	_In_ T tRight)
+    _In_ T tLeft,
+    _In_ T tRight)
 {
-	T tResult;
-	HRESULT hr=AtlMultiply(&tResult, tLeft, tRight);
-	if(FAILED(hr))
-	{
-		AtlThrow(hr);
-	}
-	return tResult;
+    T tResult;
+    HRESULT hr=AtlMultiply(&tResult, tLeft, tRight);
+    if(FAILED(hr))
+    {
+        AtlThrow(hr);
+    }
+    return tResult;
 }
 
 template <typename T>
 inline T AtlAddThrow(
-	_In_ T tLeft,
-	_In_ T tRight)
+    _In_ T tLeft,
+    _In_ T tRight)
 {
-	T tResult;
-	HRESULT hr=AtlAdd(&tResult, tLeft, tRight);
-	if(FAILED(hr))
-	{
-		AtlThrow(hr);
-	}
-	return tResult;
+    T tResult;
+    HRESULT hr=AtlAdd(&tResult, tLeft, tRight);
+    if(FAILED(hr))
+    {
+        AtlThrow(hr);
+    }
+    return tResult;
 }
 
 _Ret_opt_bytecount_x_(nCount * nSize) inline LPVOID AtlCoTaskMemCAlloc(
-	_In_ ULONG nCount,
-	_In_ ULONG nSize)
+    _In_ ULONG nCount,
+    _In_ ULONG nSize)
 {
-	HRESULT hr;
-	ULONG nBytes=0;
-	if( FAILED(hr=::ATL::AtlMultiply(&nBytes, nCount, nSize)))
-	{
-		return NULL;
-	}
-	return ::CoTaskMemAlloc(nBytes);
+    HRESULT hr;
+    ULONG nBytes=0;
+    if( FAILED(hr=::ATL::AtlMultiply(&nBytes, nCount, nSize)))
+    {
+        return NULL;
+    }
+    return ::CoTaskMemAlloc(nBytes);
 }
 
 _Ret_opt_bytecount_x_(nCount * nSize) inline LPVOID AtlCoTaskMemRecalloc(
-	_In_opt_ void *pvMemory,
-	_In_ ULONG nCount,
-	_In_ ULONG nSize)
+    _In_opt_ void *pvMemory,
+    _In_ ULONG nCount,
+    _In_ ULONG nSize)
 {
-	HRESULT hr;
-	ULONG nBytes=0;
-	if( FAILED(hr=::ATL::AtlMultiply(&nBytes, nCount, nSize)))
-	{
-		return NULL;
-	}
-	return ::CoTaskMemRealloc(pvMemory, nBytes);
+    HRESULT hr;
+    ULONG nBytes=0;
+    if( FAILED(hr=::ATL::AtlMultiply(&nBytes, nCount, nSize)))
+    {
+        return NULL;
+    }
+    return ::CoTaskMemRealloc(pvMemory, nBytes);
 }
 
-}	// namespace ATL
+}    // namespace ATL
 #pragma pack(pop)
 
 #pragma pack(push,8)
@@ -253,10 +253,10 @@ namespace ATL
 namespace Checked
 {
     void __cdecl memcpy_s(
-		_Out_bytecap_post_bytecount_(_S1max,_N) void *s1,
-		_In_ size_t _S1max,
-		_In_bytecount_(_N) const void *s2,
-		_In_ size_t _N);
+        _Out_bytecap_post_bytecount_(_S1max,_N) void *s1,
+        _In_ size_t _S1max,
+        _In_bytecount_(_N) const void *s2,
+        _In_ size_t _N);
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -265,339 +265,339 @@ namespace Checked
 class CCRTAllocator
 {
 public:
-	_Ret_opt_bytecap_(nBytes) static void* Reallocate(
-		_In_ void* p,
-		_In_ size_t nBytes) throw()
-	{
-		return nb_realloc(p, nBytes);
-	}
+    _Ret_opt_bytecap_(nBytes) static void* Reallocate(
+        _In_ void* p,
+        _In_ size_t nBytes) throw()
+    {
+        return nb_realloc(p, nBytes);
+    }
 
-	_Ret_opt_bytecap_(nBytes) static void* Allocate(_In_ size_t nBytes) throw()
-	{
-		return nb_malloc(nBytes);
-	}
+    _Ret_opt_bytecap_(nBytes) static void* Allocate(_In_ size_t nBytes) throw()
+    {
+        return nb_malloc(nBytes);
+    }
 
-	static void Free(_In_ void* p) throw()
-	{
-		nb_free(p);
-	}
+    static void Free(_In_ void* p) throw()
+    {
+        nb_free(p);
+    }
 };
 
 class CLocalAllocator
 {
 public:
-	_Ret_opt_bytecap_(nBytes) static void* Allocate(_In_ size_t nBytes) throw()
-	{
-		return ::LocalAlloc(LMEM_FIXED, nBytes);
-	}
-	_Ret_opt_bytecap_(nBytes) static void* Reallocate(
-		_In_ void* p,
-		_In_ size_t nBytes) throw()
-	{
-		if (p==NULL){
-			return ( Allocate(nBytes) );
+    _Ret_opt_bytecap_(nBytes) static void* Allocate(_In_ size_t nBytes) throw()
+    {
+        return ::LocalAlloc(LMEM_FIXED, nBytes);
+    }
+    _Ret_opt_bytecap_(nBytes) static void* Reallocate(
+        _In_ void* p,
+        _In_ size_t nBytes) throw()
+    {
+        if (p==NULL){
+            return ( Allocate(nBytes) );
 
-		}
-		if (nBytes==0){
-			Free(p);
-			return NULL;
-		}
-		return ::LocalReAlloc(p, nBytes, 0);
-	}
-	static void Free(_In_ void* p) throw()
-	{
-		::LocalFree(p);
-	}
+        }
+        if (nBytes==0){
+            Free(p);
+            return NULL;
+        }
+        return ::LocalReAlloc(p, nBytes, 0);
+    }
+    static void Free(_In_ void* p) throw()
+    {
+        ::LocalFree(p);
+    }
 };
 
 class CGlobalAllocator
 {
 public:
-	_Ret_opt_bytecap_(nBytes) static void* Allocate(_In_ size_t nBytes) throw()
-	{
-		return ::GlobalAlloc(GMEM_FIXED, nBytes);
-	}
-	_Ret_opt_bytecap_(nBytes) static void* Reallocate(
-		_In_ void* p,
-		_In_ size_t nBytes) throw()
-	{
-		if (p==NULL){
-			return ( Allocate(nBytes) );
+    _Ret_opt_bytecap_(nBytes) static void* Allocate(_In_ size_t nBytes) throw()
+    {
+        return ::GlobalAlloc(GMEM_FIXED, nBytes);
+    }
+    _Ret_opt_bytecap_(nBytes) static void* Reallocate(
+        _In_ void* p,
+        _In_ size_t nBytes) throw()
+    {
+        if (p==NULL){
+            return ( Allocate(nBytes) );
 
-		}
-		if (nBytes==0){
-			Free(p);
-			return NULL;
-		}
-		return ::GlobalReAlloc(p, nBytes, 0);
-	}
-	static void Free(_In_ void* p) throw()
-	{
-		::GlobalFree(p);
-	}
+        }
+        if (nBytes==0){
+            Free(p);
+            return NULL;
+        }
+        return ::GlobalReAlloc(p, nBytes, 0);
+    }
+    static void Free(_In_ void* p) throw()
+    {
+        ::GlobalFree(p);
+    }
 };
 
 template <class T, class Allocator = CCRTAllocator>
 class CHeapPtrBase
 {
 protected:
-	CHeapPtrBase() throw() :
-		m_pData(NULL)
-	{
-	}
-	CHeapPtrBase(_Inout_ CHeapPtrBase<T, Allocator>& p) throw()
-	{
-		m_pData = p.Detach();  // Transfer ownership
-	}
-	explicit CHeapPtrBase(_In_ T* pData) throw() :
-		m_pData(pData)
-	{
-	}
+    CHeapPtrBase() throw() :
+        m_pData(NULL)
+    {
+    }
+    CHeapPtrBase(_Inout_ CHeapPtrBase<T, Allocator>& p) throw()
+    {
+        m_pData = p.Detach();  // Transfer ownership
+    }
+    explicit CHeapPtrBase(_In_ T* pData) throw() :
+        m_pData(pData)
+    {
+    }
 
 public:
-	~CHeapPtrBase() throw()
-	{
-		Free();
-	}
+    ~CHeapPtrBase() throw()
+    {
+        Free();
+    }
 
 protected:
-	CHeapPtrBase<T, Allocator>& operator=(_Inout_ CHeapPtrBase<T, Allocator>& p) throw()
-	{
-		if(m_pData != p.m_pData)
-			Attach(p.Detach());  // Transfer ownership
-		return *this;
-	}
+    CHeapPtrBase<T, Allocator>& operator=(_Inout_ CHeapPtrBase<T, Allocator>& p) throw()
+    {
+        if(m_pData != p.m_pData)
+            Attach(p.Detach());  // Transfer ownership
+        return *this;
+    }
 
 public:
-	operator T*() const throw()
-	{
-		return m_pData;
-	}
+    operator T*() const throw()
+    {
+        return m_pData;
+    }
 
-	T* operator->() const throw()
-	{
-		ATLASSERT(m_pData != NULL);
-		return m_pData;
-	}
+    T* operator->() const throw()
+    {
+        ATLASSERT(m_pData != NULL);
+        return m_pData;
+    }
 
-	T** operator&() throw()
-	{
-		ATLASSUME(m_pData == NULL);
-		return &m_pData;
-	}
+    T** operator&() throw()
+    {
+        ATLASSUME(m_pData == NULL);
+        return &m_pData;
+    }
 
-	// Allocate a buffer with the given number of bytes
-	bool AllocateBytes(_In_ size_t nBytes) throw()
-	{
-		ATLASSERT(m_pData == NULL);
-		m_pData = static_cast<T*>(Allocator::Allocate(nBytes));
-		if (m_pData == NULL)
-			return false;
+    // Allocate a buffer with the given number of bytes
+    bool AllocateBytes(_In_ size_t nBytes) throw()
+    {
+        ATLASSERT(m_pData == NULL);
+        m_pData = static_cast<T*>(Allocator::Allocate(nBytes));
+        if (m_pData == NULL)
+            return false;
 
-		return true;
-	}
+        return true;
+    }
 
-	// Attach to an existing pointer (takes ownership)
-	void Attach(_In_ T* pData) throw()
-	{
-		Allocator::Free(m_pData);
-		m_pData = pData;
-	}
+    // Attach to an existing pointer (takes ownership)
+    void Attach(_In_ T* pData) throw()
+    {
+        Allocator::Free(m_pData);
+        m_pData = pData;
+    }
 
-	// Detach the pointer (releases ownership)
-	T* Detach() throw()
-	{
-		T* pTemp = m_pData;
-		m_pData = NULL;
-		return pTemp;
-	}
+    // Detach the pointer (releases ownership)
+    T* Detach() throw()
+    {
+        T* pTemp = m_pData;
+        m_pData = NULL;
+        return pTemp;
+    }
 
-	// Free the memory pointed to, and set the pointer to NULL
-	void Free() throw()
-	{
-		Allocator::Free(m_pData);
-		m_pData = NULL;
-	}
+    // Free the memory pointed to, and set the pointer to NULL
+    void Free() throw()
+    {
+        Allocator::Free(m_pData);
+        m_pData = NULL;
+    }
 
-	// Reallocate the buffer to hold a given number of bytes
-	bool ReallocateBytes(_In_ size_t nBytes) throw()
-	{
-		T* pNew;
+    // Reallocate the buffer to hold a given number of bytes
+    bool ReallocateBytes(_In_ size_t nBytes) throw()
+    {
+        T* pNew;
 
-		pNew = static_cast<T*>(Allocator::Reallocate(m_pData, nBytes));
-		if (pNew == NULL)
-			return false;
-		m_pData = pNew;
+        pNew = static_cast<T*>(Allocator::Reallocate(m_pData, nBytes));
+        if (pNew == NULL)
+            return false;
+        m_pData = pNew;
 
-		return true;
-	}
+        return true;
+    }
 
 public:
-	T* m_pData;
+    T* m_pData;
 };
 
 template <typename T, class Allocator = CCRTAllocator>
 class CHeapPtr :
-	public CHeapPtrBase<T, Allocator>
+    public CHeapPtrBase<T, Allocator>
 {
 public:
-	CHeapPtr() throw()
-	{
-	}
-	CHeapPtr(_Inout_ CHeapPtr<T, Allocator>& p) throw() :
-		CHeapPtrBase<T, Allocator>(p)
-	{
-	}
-	explicit CHeapPtr(_In_ T* p) throw() :
-		CHeapPtrBase<T, Allocator>(p)
-	{
-	}
+    CHeapPtr() throw()
+    {
+    }
+    CHeapPtr(_Inout_ CHeapPtr<T, Allocator>& p) throw() :
+        CHeapPtrBase<T, Allocator>(p)
+    {
+    }
+    explicit CHeapPtr(_In_ T* p) throw() :
+        CHeapPtrBase<T, Allocator>(p)
+    {
+    }
 
-	CHeapPtr<T, Allocator>& operator=(_Inout_ CHeapPtr<T, Allocator>& p) throw()
-	{
-		CHeapPtrBase<T, Allocator>::operator=(p);
+    CHeapPtr<T, Allocator>& operator=(_Inout_ CHeapPtr<T, Allocator>& p) throw()
+    {
+        CHeapPtrBase<T, Allocator>::operator=(p);
 
-		return *this;
-	}
+        return *this;
+    }
 
-	// Allocate a buffer with the given number of elements
-	bool Allocate(_In_ size_t nElements = 1) throw()
-	{
-		size_t nBytes=0;
-		if(FAILED(::ATL::AtlMultiply(&nBytes, nElements, sizeof(T))))
-		{
-			return false;
-		}
-		return this->AllocateBytes(nBytes);
-	}
+    // Allocate a buffer with the given number of elements
+    bool Allocate(_In_ size_t nElements = 1) throw()
+    {
+        size_t nBytes=0;
+        if(FAILED(::ATL::AtlMultiply(&nBytes, nElements, sizeof(T))))
+        {
+            return false;
+        }
+        return this->AllocateBytes(nBytes);
+    }
 
-	// Reallocate the buffer to hold a given number of elements
-	bool Reallocate(_In_ size_t nElements) throw()
-	{
-		size_t nBytes=0;
-		if(FAILED(::ATL::AtlMultiply(&nBytes, nElements, sizeof(T))))
-		{
-			return false;
-		}
-		return this->ReallocateBytes(nBytes);
-	}
+    // Reallocate the buffer to hold a given number of elements
+    bool Reallocate(_In_ size_t nElements) throw()
+    {
+        size_t nBytes=0;
+        if(FAILED(::ATL::AtlMultiply(&nBytes, nElements, sizeof(T))))
+        {
+            return false;
+        }
+        return this->ReallocateBytes(nBytes);
+    }
 };
 
 template< typename T, int t_nFixedBytes = 128, class Allocator = CCRTAllocator >
 class CTempBuffer
 {
 public:
-	CTempBuffer() throw() :
-		m_p( NULL )
-	{
-	}
-	CTempBuffer(_In_ size_t nElements) throw() :
-		m_p( NULL )
-	{
-		Allocate( nElements );
-	}
+    CTempBuffer() throw() :
+        m_p( NULL )
+    {
+    }
+    CTempBuffer(_In_ size_t nElements) throw() :
+        m_p( NULL )
+    {
+        Allocate( nElements );
+    }
 
-	~CTempBuffer() throw()
-	{
-		if( m_p != reinterpret_cast< T* >( m_abFixedBuffer ) )
-		{
-			FreeHeap();
-		}
-	}
+    ~CTempBuffer() throw()
+    {
+        if( m_p != reinterpret_cast< T* >( m_abFixedBuffer ) )
+        {
+            FreeHeap();
+        }
+    }
 
-	operator T*() const throw()
-	{
-		return( m_p );
-	}
-	T* operator->() const throw()
-	{
-		ATLASSERT( m_p != NULL );
-		return( m_p );
-	}
+    operator T*() const throw()
+    {
+        return( m_p );
+    }
+    T* operator->() const throw()
+    {
+        ATLASSERT( m_p != NULL );
+        return( m_p );
+    }
 
-	_Ret_opt_bytecap_x_(nElements * sizeof(T)) T* Allocate(_In_ size_t nElements) throw()
-	{
-		return( this->AllocateBytes( ::ATL::AtlMultiplyThrow(nElements,sizeof( T )) ) );
-	}
+    _Ret_opt_bytecap_x_(nElements * sizeof(T)) T* Allocate(_In_ size_t nElements) throw()
+    {
+        return( this->AllocateBytes( ::ATL::AtlMultiplyThrow(nElements,sizeof( T )) ) );
+    }
 
-	_Ret_opt_bytecap_x_(nElements * sizeof(T)) T* Reallocate(_In_ size_t nElements) throw()
-	{
-		ATLENSURE(nElements < size_t(-1)/sizeof(T) );
-		size_t nNewSize = nElements*sizeof( T ) ;
+    _Ret_opt_bytecap_x_(nElements * sizeof(T)) T* Reallocate(_In_ size_t nElements) throw()
+    {
+        ATLENSURE(nElements < size_t(-1)/sizeof(T) );
+        size_t nNewSize = nElements*sizeof( T ) ;
 
-		if (m_p == NULL)
-			return this->AllocateBytes(nNewSize);
+        if (m_p == NULL)
+            return this->AllocateBytes(nNewSize);
 
-		if (nNewSize > t_nFixedBytes)
-		{
-			if( m_p == reinterpret_cast< T* >( m_abFixedBuffer ) )
-			{
-				// We have to allocate from the heap and copy the contents into the new buffer
-				AllocateHeap(nNewSize);
-				Checked::memcpy_s(m_p, nNewSize, m_abFixedBuffer, t_nFixedBytes);
-			}
-			else
-			{
-				ReAllocateHeap( nNewSize );
-			}
-		}
-		else
-		{
-			if (m_p != reinterpret_cast< T* >( m_abFixedBuffer ))
-			{
-				Checked::memcpy_s(m_abFixedBuffer, t_nFixedBytes, m_p, nNewSize);
-				FreeHeap();
-			}
-			m_p = reinterpret_cast< T* >( m_abFixedBuffer );
-		}
+        if (nNewSize > t_nFixedBytes)
+        {
+            if( m_p == reinterpret_cast< T* >( m_abFixedBuffer ) )
+            {
+                // We have to allocate from the heap and copy the contents into the new buffer
+                AllocateHeap(nNewSize);
+                Checked::memcpy_s(m_p, nNewSize, m_abFixedBuffer, t_nFixedBytes);
+            }
+            else
+            {
+                ReAllocateHeap( nNewSize );
+            }
+        }
+        else
+        {
+            if (m_p != reinterpret_cast< T* >( m_abFixedBuffer ))
+            {
+                Checked::memcpy_s(m_abFixedBuffer, t_nFixedBytes, m_p, nNewSize);
+                FreeHeap();
+            }
+            m_p = reinterpret_cast< T* >( m_abFixedBuffer );
+        }
 
-		return m_p;
-	}
+        return m_p;
+    }
 
-	_Ret_opt_bytecap_(nBytes) T* AllocateBytes(_In_ size_t nBytes)
-	{
-		ATLASSERT( m_p == NULL );
-		if( nBytes > t_nFixedBytes )
-		{
-			AllocateHeap( nBytes );
-		}
-		else
-		{
-			m_p = reinterpret_cast< T* >( m_abFixedBuffer );
-		}
+    _Ret_opt_bytecap_(nBytes) T* AllocateBytes(_In_ size_t nBytes)
+    {
+        ATLASSERT( m_p == NULL );
+        if( nBytes > t_nFixedBytes )
+        {
+            AllocateHeap( nBytes );
+        }
+        else
+        {
+            m_p = reinterpret_cast< T* >( m_abFixedBuffer );
+        }
 
-		return( m_p );
-	}
-
-private:
-	void AllocateHeap(_In_ size_t nBytes)
-	{
-		T* p = static_cast< T* >( Allocator::Allocate( nBytes ) );
-		if( p == NULL )
-		{
-			AtlThrow( E_OUTOFMEMORY );
-		}
-		m_p = p;
-	}
-
-	void ReAllocateHeap(_In_ size_t nNewSize)
-	{
-		T* p = static_cast< T* >( Allocator::Reallocate(m_p, nNewSize) );
-		if ( p == NULL )
-		{
-			AtlThrow( E_OUTOFMEMORY );
-		}
-		m_p = p;
-	}
-
-	void FreeHeap() throw()
-	{
-		Allocator::Free( m_p );
-	}
+        return( m_p );
+    }
 
 private:
-	T* m_p;
-	BYTE m_abFixedBuffer[t_nFixedBytes];
+    void AllocateHeap(_In_ size_t nBytes)
+    {
+        T* p = static_cast< T* >( Allocator::Allocate( nBytes ) );
+        if( p == NULL )
+        {
+            AtlThrow( E_OUTOFMEMORY );
+        }
+        m_p = p;
+    }
+
+    void ReAllocateHeap(_In_ size_t nNewSize)
+    {
+        T* p = static_cast< T* >( Allocator::Reallocate(m_p, nNewSize) );
+        if ( p == NULL )
+        {
+            AtlThrow( E_OUTOFMEMORY );
+        }
+        m_p = p;
+    }
+
+    void FreeHeap() throw()
+    {
+        Allocator::Free( m_p );
+    }
+
+private:
+    T* m_p;
+    BYTE m_abFixedBuffer[t_nFixedBytes];
 };
 
 
@@ -608,9 +608,9 @@ namespace _ATL_SAFE_ALLOCA_IMPL
 
 #ifndef _ATL_STACK_MARGIN
 #if defined(_M_IX86)
-#define _ATL_STACK_MARGIN	0x2000	// Minimum stack available after call to _ATL_SAFE_ALLOCA
+#define _ATL_STACK_MARGIN    0x2000    // Minimum stack available after call to _ATL_SAFE_ALLOCA
 #else //_M_AMD64 _M_IA64
-#define _ATL_STACK_MARGIN	0x4000
+#define _ATL_STACK_MARGIN    0x4000
 #endif
 #endif //_ATL_STACK_MARGIN
 
@@ -627,18 +627,18 @@ __declspec(noinline) inline bool _AtlVerifyStackAvailable(_In_ SIZE_T Size)
     try
 #endif
     {
-		SIZE_T size=0;
-		HRESULT hrAdd=::ATL::AtlAdd(&size, Size, static_cast<SIZE_T>(_ATL_STACK_MARGIN));
-		if(FAILED(hrAdd))
-		{
-			ATLASSERT(FALSE);
-			bStackAvailable = false;
-		}
-		else
-		{
-			PVOID p = _alloca(size);
-			(p);
-		}
+        SIZE_T size=0;
+        HRESULT hrAdd=::ATL::AtlAdd(&size, Size, static_cast<SIZE_T>(_ATL_STACK_MARGIN));
+        if(FAILED(hrAdd))
+        {
+            ATLASSERT(FALSE);
+            bStackAvailable = false;
+        }
+        else
+        {
+            PVOID p = _alloca(size);
+            (p);
+        }
     }
 #if !defined(__MINGW32__)
     __except ((EXCEPTION_STACK_OVERFLOW == GetExceptionCode()) ?
@@ -664,57 +664,57 @@ template < class Allocator>
 class CAtlSafeAllocBufferManager
 {
 private :
-	struct CAtlSafeAllocBufferNode
-	{
-		CAtlSafeAllocBufferNode* m_pNext;
+    struct CAtlSafeAllocBufferNode
+    {
+        CAtlSafeAllocBufferNode* m_pNext;
 #if defined(_M_IX86)
-		BYTE _pad[4];
+        BYTE _pad[4];
 #elif defined(_M_IA64)
-		BYTE _pad[8];
+        BYTE _pad[8];
 #elif defined(_M_AMD64)
-		BYTE _pad[8];
+        BYTE _pad[8];
 #else
-	#error Only supported for X86, AMD64 and IA64
+    #error Only supported for X86, AMD64 and IA64
 #endif
-		void* GetData()
-		{
-			return (this + 1);
-		}
-	};
+        void* GetData()
+        {
+            return (this + 1);
+        }
+    };
 
-	CAtlSafeAllocBufferNode* m_pHead;
+    CAtlSafeAllocBufferNode* m_pHead;
 public :
 
-	CAtlSafeAllocBufferManager() : m_pHead(NULL)
-	{
-	}
-	_Ret_opt_bytecap_(nRequestedSize) void* Allocate(_In_ SIZE_T nRequestedSize)
-	{
-		CAtlSafeAllocBufferNode *p = (CAtlSafeAllocBufferNode*)Allocator::Allocate(::ATL::AtlAddThrow(nRequestedSize, static_cast<SIZE_T>(sizeof(CAtlSafeAllocBufferNode))));
-		if (p == NULL)
-			return NULL;
+    CAtlSafeAllocBufferManager() : m_pHead(NULL)
+    {
+    }
+    _Ret_opt_bytecap_(nRequestedSize) void* Allocate(_In_ SIZE_T nRequestedSize)
+    {
+        CAtlSafeAllocBufferNode *p = (CAtlSafeAllocBufferNode*)Allocator::Allocate(::ATL::AtlAddThrow(nRequestedSize, static_cast<SIZE_T>(sizeof(CAtlSafeAllocBufferNode))));
+        if (p == NULL)
+            return NULL;
 
-		// Add buffer to the list
-		p->m_pNext = m_pHead;
-		m_pHead = p;
+        // Add buffer to the list
+        p->m_pNext = m_pHead;
+        m_pHead = p;
 
-		return p->GetData();
-	}
-	~CAtlSafeAllocBufferManager()
-	{
-		// Walk the list and free the buffers
-		while (m_pHead != NULL)
-		{
-			CAtlSafeAllocBufferNode* p = m_pHead;
-			m_pHead = m_pHead->m_pNext;
-			Allocator::Free(p);
-		}
-	}
+        return p->GetData();
+    }
+    ~CAtlSafeAllocBufferManager()
+    {
+        // Walk the list and free the buffers
+        while (m_pHead != NULL)
+        {
+            CAtlSafeAllocBufferNode* p = m_pHead;
+            m_pHead = m_pHead->m_pNext;
+            Allocator::Free(p);
+        }
+    }
 };
 
-}	// namespace _ATL_SAFE_ALLOCA_IMPL
+}    // namespace _ATL_SAFE_ALLOCA_IMPL
 
-}	// namespace ATL
+}    // namespace ATL
  #pragma pack(pop)
 
 // Use one of the following macros before using _ATL_SAFE_ALLOCA
@@ -722,7 +722,7 @@ public :
 #define USES_ATL_SAFE_ALLOCA_EX(x)    ATL::_ATL_SAFE_ALLOCA_IMPL::CAtlSafeAllocBufferManager<x> _AtlSafeAllocaManager
 
 #ifndef USES_ATL_SAFE_ALLOCA
-#define USES_ATL_SAFE_ALLOCA		USES_ATL_SAFE_ALLOCA_EX(ATL::CCRTAllocator)
+#define USES_ATL_SAFE_ALLOCA        USES_ATL_SAFE_ALLOCA_EX(ATL::CCRTAllocator)
 #endif
 
 // nRequestedSize - requested size in bytes
@@ -733,35 +733,35 @@ public :
 // This available for testing purposes. It will help determine the max stack usage due to _alloca's
 // Disable _alloca not within try-except prefast warning since we verify stack space is available before.
 #ifdef _ATL_SAFE_ALLOCA_ALWAYS_ALLOCATE_THRESHOLD_SIZE
-#define _ATL_SAFE_ALLOCA(nRequestedSize, nThreshold)	\
-	__pragma(warning(push))\
-	__pragma(warning(disable:4616))\
-	__pragma(warning(disable:6255))\
-	((nRequestedSize <= nThreshold && ATL::_ATL_SAFE_ALLOCA_IMPL::_AtlVerifyStackAvailable(nThreshold) ) ?	\
-		_alloca(nThreshold) :	\
-		((ATL::_ATL_SAFE_ALLOCA_IMPL::_AtlVerifyStackAvailable(nThreshold)) ? _alloca(nThreshold) : 0),	\
-			_AtlSafeAllocaManager.Allocate(nRequestedSize))\
-	__pragma(warning(pop))
+#define _ATL_SAFE_ALLOCA(nRequestedSize, nThreshold)    \
+    __pragma(warning(push))\
+    __pragma(warning(disable:4616))\
+    __pragma(warning(disable:6255))\
+    ((nRequestedSize <= nThreshold && ATL::_ATL_SAFE_ALLOCA_IMPL::_AtlVerifyStackAvailable(nThreshold) ) ?    \
+        _alloca(nThreshold) :    \
+        ((ATL::_ATL_SAFE_ALLOCA_IMPL::_AtlVerifyStackAvailable(nThreshold)) ? _alloca(nThreshold) : 0),    \
+            _AtlSafeAllocaManager.Allocate(nRequestedSize))\
+    __pragma(warning(pop))
 #else
 #if !defined(__MINGW32__)
-#define _ATL_SAFE_ALLOCA(nRequestedSize, nThreshold)	\
-	__pragma(warning(push))\
-	__pragma(warning(disable:4616))\
-	__pragma(warning(disable:6255))\
-	((nRequestedSize <= nThreshold && ATL::_ATL_SAFE_ALLOCA_IMPL::_AtlVerifyStackAvailable(nRequestedSize) ) ?	\
-		_alloca(nRequestedSize) :	\
-		_AtlSafeAllocaManager.Allocate(nRequestedSize))\
-	__pragma(warning(pop))
+#define _ATL_SAFE_ALLOCA(nRequestedSize, nThreshold)    \
+    __pragma(warning(push))\
+    __pragma(warning(disable:4616))\
+    __pragma(warning(disable:6255))\
+    ((nRequestedSize <= nThreshold && ATL::_ATL_SAFE_ALLOCA_IMPL::_AtlVerifyStackAvailable(nRequestedSize) ) ?    \
+        _alloca(nRequestedSize) :    \
+        _AtlSafeAllocaManager.Allocate(nRequestedSize))\
+    __pragma(warning(pop))
 #else
-#define _ATL_SAFE_ALLOCA(nRequestedSize, nThreshold)	\
-	((nRequestedSize <= nThreshold && ATL::_ATL_SAFE_ALLOCA_IMPL::_AtlVerifyStackAvailable(nRequestedSize) ) ?	\
-		_alloca(nRequestedSize) :	\
-		_AtlSafeAllocaManager.Allocate(nRequestedSize))
+#define _ATL_SAFE_ALLOCA(nRequestedSize, nThreshold)    \
+    ((nRequestedSize <= nThreshold && ATL::_ATL_SAFE_ALLOCA_IMPL::_AtlVerifyStackAvailable(nRequestedSize) ) ?    \
+        _alloca(nRequestedSize) :    \
+        _AtlSafeAllocaManager.Allocate(nRequestedSize))
 #endif
 
 #endif
 
 // Use 1024 bytes as the default threshold in ATL
 #ifndef _ATL_SAFE_ALLOCA_DEF_THRESHOLD
-#define _ATL_SAFE_ALLOCA_DEF_THRESHOLD	1024
+#define _ATL_SAFE_ALLOCA_DEF_THRESHOLD    1024
 #endif

@@ -15,19 +15,19 @@ import com.jacob.com.Variant;
  */
 public interface VisioEventListener {
 
-	public void BeforeQuit(Variant[] args);
+    public void BeforeQuit(Variant[] args);
 
-	public void DocumentChanged(Variant[] args);
+    public void DocumentChanged(Variant[] args);
 
-	public void DocumentCloseCanceled(Variant[] args);
+    public void DocumentCloseCanceled(Variant[] args);
 
-	public void DocumentCreated(Variant[] args);
+    public void DocumentCreated(Variant[] args);
 
-	public void DocumentOpened(Variant[] args);
+    public void DocumentOpened(Variant[] args);
 
-	public void DocumentSaved(Variant[] args);
+    public void DocumentSaved(Variant[] args);
 
-	public void DocumentSavedAs(Variant[] args);
+    public void DocumentSavedAs(Variant[] args);
 
-	public Variant QueryCancelQuit(Variant[] args);
+    public Variant QueryCancelQuit(Variant[] args);
 }

@@ -18,23 +18,23 @@
  *
  * This file incorporates work covered by the following copyright and
  * permission notice:
- * 	Copyright (c) 1999-2004 Sourceforge JACOB Project.
- * 	All rights reserved. Originator: Dan Adler (http://danadler.com).
- * 	Get more information about JACOB at http://sourceforge.net/projects/jacob-project
+ *     Copyright (c) 1999-2004 Sourceforge JACOB Project.
+ *     All rights reserved. Originator: Dan Adler (http://danadler.com).
+ *     Get more information about JACOB at http://sourceforge.net/projects/jacob-project
  *
- * 	This library is free software; you can redistribute it and/or
- * 	modify it under the terms of the GNU Lesser General Public
- * 	License as published by the Free Software Foundation; either
- * 	version 2.1 of the License, or (at your option) any later version.
+ *     This library is free software; you can redistribute it and/or
+ *     modify it under the terms of the GNU Lesser General Public
+ *     License as published by the Free Software Foundation; either
+ *     version 2.1 of the License, or (at your option) any later version.
  *
- * 	This library is distributed in the hope that it will be useful,
- * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
- * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * 	Lesser General Public License for more details.
+ *     This library is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *     Lesser General Public License for more details.
  *
- * 	You should have received a copy of the GNU Lesser General Public
- * 	License along with this library; if not, write to the Free Software
- * 	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ *     You should have received a copy of the GNU Lesser General Public
+ *     License along with this library; if not, write to the Free Software
+ *     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 package com.jacob.com;
 
@@ -48,64 +48,64 @@ package com.jacob.com;
  * construct a separate DispatchProxy instance for each such case!
  */
 public class DispatchProxy extends JacobObject {
-	/**
-	 * Comment for <code>m_pStream</code>
-	 */
-	public int m_pStream;
+    /**
+     * Comment for <code>m_pStream</code>
+     */
+    public int m_pStream;
 
-	/**
-	 * Marshals the passed in dispatch into the stream
-	 * 
-	 * @param localDispatch
-	 */
-	public DispatchProxy(Dispatch localDispatch) {
-		MarshalIntoStream(localDispatch);
-	}
+    /**
+     * Marshals the passed in dispatch into the stream
+     * 
+     * @param localDispatch
+     */
+    public DispatchProxy(Dispatch localDispatch) {
+        MarshalIntoStream(localDispatch);
+    }
 
-	/**
-	 * 
-	 * @return Dispatch the dispatch retrieved from the stream
-	 */
-	public Dispatch toDispatch() {
-		return MarshalFromStream();
-	}
+    /**
+     * 
+     * @return Dispatch the dispatch retrieved from the stream
+     */
+    public Dispatch toDispatch() {
+        return MarshalFromStream();
+    }
 
-	private native void MarshalIntoStream(Dispatch d);
+    private native void MarshalIntoStream(Dispatch d);
 
-	private native Dispatch MarshalFromStream();
+    private native Dispatch MarshalFromStream();
 
-	/**
-	 * now private so only this object can access was: call this to explicitly
-	 * release the com object before gc
-	 * 
-	 */
-	private native void release();
+    /**
+     * now private so only this object can access was: call this to explicitly
+     * release the com object before gc
+     * 
+     */
+    private native void release();
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#finalize()
-	 */
-	public void finalize() {
-		safeRelease();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#finalize()
+     */
+    public void finalize() {
+        safeRelease();
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.jacob.com.JacobObject#safeRelease()
-	 */
-	public void safeRelease() {
-		super.safeRelease();
-		if (m_pStream != 0) {
-			release();
-			m_pStream = 0;
-		} else {
-			// looks like a double release
-			if (isDebugEnabled()) {
-				debug(this.getClass().getName() + ":" + this.hashCode()
-						+ " double release");
-			}
-		}
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.jacob.com.JacobObject#safeRelease()
+     */
+    public void safeRelease() {
+        super.safeRelease();
+        if (m_pStream != 0) {
+            release();
+            m_pStream = 0;
+        } else {
+            // looks like a double release
+            if (isDebugEnabled()) {
+                debug(this.getClass().getName() + ":" + this.hashCode()
+                        + " double release");
+            }
+        }
+    }
 }

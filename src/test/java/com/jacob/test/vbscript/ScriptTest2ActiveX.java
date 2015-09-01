@@ -18,23 +18,23 @@
  *
  * This file incorporates work covered by the following copyright and
  * permission notice:
- * 	Copyright (c) 1999-2004 Sourceforge JACOB Project.
- * 	All rights reserved. Originator: Dan Adler (http://danadler.com).
- * 	Get more information about JACOB at http://sourceforge.net/projects/jacob-project
+ *     Copyright (c) 1999-2004 Sourceforge JACOB Project.
+ *     All rights reserved. Originator: Dan Adler (http://danadler.com).
+ *     Get more information about JACOB at http://sourceforge.net/projects/jacob-project
  *
- * 	This library is free software; you can redistribute it and/or
- * 	modify it under the terms of the GNU Lesser General Public
- * 	License as published by the Free Software Foundation; either
- * 	version 2.1 of the License, or (at your option) any later version.
+ *     This library is free software; you can redistribute it and/or
+ *     modify it under the terms of the GNU Lesser General Public
+ *     License as published by the Free Software Foundation; either
+ *     version 2.1 of the License, or (at your option) any later version.
  *
- * 	This library is distributed in the hope that it will be useful,
- * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
- * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * 	Lesser General Public License for more details.
+ *     This library is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *     Lesser General Public License for more details.
  *
- * 	You should have received a copy of the GNU Lesser General Public
- * 	License along with this library; if not, write to the Free Software
- * 	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ *     You should have received a copy of the GNU Lesser General Public
+ *     License along with this library; if not, write to the Free Software
+ *     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 package com.jacob.test.vbscript;
 
@@ -69,73 +69,73 @@ import com.jacob.test.BaseTestCase;
  * options.
  */
 public class ScriptTest2ActiveX extends BaseTestCase {
-	public static ActiveXComponent sC;
+    public static ActiveXComponent sC;
 
-	public static DispatchEvents de = null;
+    public static DispatchEvents de = null;
 
-	public static DispatchProxy sCon = null;
+    public static DispatchProxy sCon = null;
 
-	public void testActiveXSTA() {
-		try {
-			ComThread.InitSTA();
-			ScriptTest2ActiveXSTA script = new ScriptTest2ActiveXSTA();
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException ie) {
-				// should we get this?
-			}
+    public void testActiveXSTA() {
+        try {
+            ComThread.InitSTA();
+            ScriptTest2ActiveXSTA script = new ScriptTest2ActiveXSTA();
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ie) {
+                // should we get this?
+            }
 
-			// get a thread-local Dispatch from sCon
-			ActiveXComponent sc = new ActiveXComponent(sCon.toDispatch());
+            // get a thread-local Dispatch from sCon
+            ActiveXComponent sc = new ActiveXComponent(sCon.toDispatch());
 
-			// call a method on the thread-local Dispatch obtained
-			// from the DispatchProxy. If you try to make the same
-			// method call on the sControl object - you will get a
-			// ComException.
-			String scriptCommand = getSampleVPScriptForEval();
-			Variant result = sc.invoke("Eval", scriptCommand);
-			System.out.println("eval(" + scriptCommand + ") = " + result);
-			script.quit();
-			System.out.println("called quit");
-		} catch (ComException e) {
-			e.printStackTrace();
-			fail("blew up with Com Exception " + e);
-		} finally {
-			Integer I = null;
-			for (int i = 1; i < 1000000; i++) {
-				I = new Integer(i);
-			}
-			System.out.println(I);
-			ComThread.Release();
-		}
-	}
+            // call a method on the thread-local Dispatch obtained
+            // from the DispatchProxy. If you try to make the same
+            // method call on the sControl object - you will get a
+            // ComException.
+            String scriptCommand = getSampleVPScriptForEval();
+            Variant result = sc.invoke("Eval", scriptCommand);
+            System.out.println("eval(" + scriptCommand + ") = " + result);
+            script.quit();
+            System.out.println("called quit");
+        } catch (ComException e) {
+            e.printStackTrace();
+            fail("blew up with Com Exception " + e);
+        } finally {
+            Integer I = null;
+            for (int i = 1; i < 1000000; i++) {
+                I = new Integer(i);
+            }
+            System.out.println(I);
+            ComThread.Release();
+        }
+    }
 
-	public class ScriptTest2ActiveXSTA extends STA {
+    public class ScriptTest2ActiveXSTA extends STA {
 
-		public boolean OnInit() {
-			try {
-				System.out.println("OnInit");
-				System.out.println(Thread.currentThread());
-				String lang = "VBScript";
-				sC = new ActiveXComponent("ScriptControl");
+        public boolean OnInit() {
+            try {
+                System.out.println("OnInit");
+                System.out.println(Thread.currentThread());
+                String lang = "VBScript";
+                sC = new ActiveXComponent("ScriptControl");
 
-				// sCon can be called from another thread
-				sCon = new DispatchProxy(sC);
+                // sCon can be called from another thread
+                sCon = new DispatchProxy(sC);
 
-				sC.setProperty("Language", lang);
-				ScriptTestErrEvents te = new ScriptTestErrEvents();
-				de = new DispatchEvents(sC, te);
-				return true;
-			} catch (Exception e) {
-				e.printStackTrace();
-				return false;
-			}
-		}
+                sC.setProperty("Language", lang);
+                ScriptTestErrEvents te = new ScriptTestErrEvents();
+                de = new DispatchEvents(sC, te);
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
 
-		public void OnQuit() {
-			System.out.println("OnQuit");
-		}
+        public void OnQuit() {
+            System.out.println("OnQuit");
+        }
 
-	}
+    }
 
 }

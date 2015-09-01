@@ -87,7 +87,7 @@ JNIEXPORT jobject JNICALL Java_com_jacob_com_Dispatch_invokev
  * Signature: (Ljava/lang/Object;I;)I
  */
 JNIEXPORT jint JNICALL Java_com_jacob_com_Dispatch_hasExited
-	(JNIEnv *, jclass, jobject, jint, jint);
+    (JNIEnv *, jclass, jobject, jint, jint);
 
 #ifdef __cplusplus
 }

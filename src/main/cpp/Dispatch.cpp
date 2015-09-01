@@ -279,7 +279,7 @@ JNIEXPORT jintArray JNICALL Java_com_jacob_com_Dispatch_getIDsOfNames
   {
     USES_CONVERSION;
     jstring s = (jstring)env->GetObjectArrayElement(names, i);
-	// if we used env->GetStringChars() would that let us drop the conversion?
+    // if we used env->GetStringChars() would that let us drop the conversion?
     const char *nm = env->GetStringUTFChars(s, NULL);
     LPOLESTR nmos = A2W(nm);
     env->ReleaseStringUTFChars(s, nm);
@@ -319,8 +319,8 @@ static char* BasicToCharString(const BSTR inBasicString)
     if (charStrSize > 1)
     {
         charString = new char[charStrSize];
-		size_t convertedSize;
-		::wcstombs_s(&convertedSize, charString, charStrSize, inBasicString, charStrSize);
+        size_t convertedSize;
+        ::wcstombs_s(&convertedSize, charString, charStrSize, inBasicString, charStrSize);
     }
     else 
     {
@@ -394,14 +394,14 @@ static wchar_t* CreateErrorMsgFromInfo(HRESULT inResult, EXCEPINFO* ioInfo,
     const size_t MSG_LEN = ::wcslen(methNameW) + ::wcslen(msg2) + 256;
     msg = new wchar_t[MSG_LEN];
     ::wcsncpy_s(msg, MSG_LEN, 
-		L"A COM exception has been encountered:\nAt Invoke of: ", 
-		wcslen(L"A COM exception has been encountered:\nAt Invoke of: "));
+        L"A COM exception has been encountered:\nAt Invoke of: ", 
+        wcslen(L"A COM exception has been encountered:\nAt Invoke of: "));
     ::wcsncat_s(msg, MSG_LEN, methNameW, wcslen(methNameW));
     ::wcsncat_s(msg, MSG_LEN, L"\nDescription: ", wcslen(L"\nDescription: "));
     ::wcsncat_s(msg, MSG_LEN, msg2, wcslen(msg2));
     // jacob-msg 1075 - SF 1053872 : Documentation says "use LocalFree"!! 
     //delete msg2;
-	LocalFree(msg2); 
+    LocalFree(msg2); 
   }
   delete methNameW;
   return msg;
@@ -494,15 +494,15 @@ JNIEXPORT jobject JNICALL Java_com_jacob_com_Dispatch_invokev
   jint count = env->GetArrayLength(uArgErr);
   if ( count != 0 )
   {
-	  jint *uAE = env->GetIntArrayElements(uArgErr, NULL);
-	  hr = pIDispatch->Invoke(dispID,IID_NULL,
-		lcid,(WORD)wFlags,&dispparams,v,&excepInfo,(unsigned int *)uAE); // SF 1689061
-	  env->ReleaseIntArrayElements(uArgErr, uAE, 0);
+      jint *uAE = env->GetIntArrayElements(uArgErr, NULL);
+      hr = pIDispatch->Invoke(dispID,IID_NULL,
+        lcid,(WORD)wFlags,&dispparams,v,&excepInfo,(unsigned int *)uAE); // SF 1689061
+      env->ReleaseIntArrayElements(uArgErr, uAE, 0);
   }
   else
   {
-	  hr = pIDispatch->Invoke(dispID,IID_NULL,
-		lcid,(WORD)wFlags,&dispparams,v,&excepInfo, NULL); // SF 1689061
+      hr = pIDispatch->Invoke(dispID,IID_NULL,
+        lcid,(WORD)wFlags,&dispparams,v,&excepInfo, NULL); // SF 1689061
   }
   if (num_args) 
   {
@@ -531,30 +531,30 @@ JNIEXPORT jobject JNICALL Java_com_jacob_com_Dispatch_invokev
     // this method can get called with a name or a dispatch id
     // we need to handle both SF 1114159 
     if (name != NULL){
-	    const char *nm = env->GetStringUTFChars(name, NULL);
-	    buf = CreateErrorMsgFromInfo(hr, &excepInfo, nm);
-	    env->ReleaseStringUTFChars(name, nm);
+        const char *nm = env->GetStringUTFChars(name, NULL);
+        buf = CreateErrorMsgFromInfo(hr, &excepInfo, nm);
+        env->ReleaseStringUTFChars(name, nm);
     } else {
-		dispIdAsName = new char[256];
-		// get the id string
-		_itoa_s (dispID, dispIdAsName, 256,10);
-		//continue on mostly as before
-		buf = CreateErrorMsgFromInfo(hr,&excepInfo,dispIdAsName); 
+        dispIdAsName = new char[256];
+        // get the id string
+        _itoa_s (dispID, dispIdAsName, 256,10);
+        //continue on mostly as before
+        buf = CreateErrorMsgFromInfo(hr,&excepInfo,dispIdAsName); 
     }
     
     // jacob-msg 3696 - SF 1053866
-	if(hr == DISP_E_EXCEPTION)
-	{
-		if(excepInfo.scode != 0)
-		{
-			hr = excepInfo.scode;
-		}
-		else
-		{
-			hr = _com_error::WCodeToHRESULT(excepInfo.wCode);
-		}
-	}
-	
+    if(hr == DISP_E_EXCEPTION)
+    {
+        if(excepInfo.scode != 0)
+        {
+            hr = excepInfo.scode;
+        }
+        else
+        {
+            hr = _com_error::WCodeToHRESULT(excepInfo.wCode);
+        }
+    }
+    
     ThrowComFailUnicode(env, buf, hr);
     if (buf) delete buf;
     if (dispIdAsName) delete dispIdAsName;
@@ -568,20 +568,20 @@ JNIEXPORT jobject JNICALL Java_com_jacob_com_Dispatch_invokev
  * Wait method added so folks could wait until a com server terminated
  */
 JNIEXPORT jint JNICALL Java_com_jacob_com_Dispatch_hasExited
-		(JNIEnv *env,jclass clazz, jobject disp, jint dispid, jint lcid) {
-	IDispatch *pIDispatch = extractDispatch(env, disp);
-	if (!pIDispatch) {
-		// should we return 0?
-		return NULL;
-	}
-	ITypeInfo *v;
-	HRESULT hr = pIDispatch->GetTypeInfo(dispid, lcid, &v);
-	if (hr == RPC_E_SERVERCALL_RETRYLATER || hr == RPC_E_CALL_REJECTED || hr
-			== 0) {
-		return 0;
-	} else {
-		return 1;
-	}
+        (JNIEnv *env,jclass clazz, jobject disp, jint dispid, jint lcid) {
+    IDispatch *pIDispatch = extractDispatch(env, disp);
+    if (!pIDispatch) {
+        // should we return 0?
+        return NULL;
+    }
+    ITypeInfo *v;
+    HRESULT hr = pIDispatch->GetTypeInfo(dispid, lcid, &v);
+    if (hr == RPC_E_SERVERCALL_RETRYLATER || hr == RPC_E_CALL_REJECTED || hr
+            == 0) {
+        return 0;
+    } else {
+        return 1;
+    }
 }
 
 }

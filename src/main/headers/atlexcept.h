@@ -27,32 +27,32 @@ namespace ATL
 // Exception raise (for functions that cannot return an error code)
 
 inline void __declspec(noreturn) _AtlRaiseException(
-	_In_ DWORD dwExceptionCode,
-	_In_ DWORD dwExceptionFlags = EXCEPTION_NONCONTINUABLE)
+    _In_ DWORD dwExceptionCode,
+    _In_ DWORD dwExceptionFlags = EXCEPTION_NONCONTINUABLE)
 {
-	RaiseException( dwExceptionCode, dwExceptionFlags, 0, NULL );
+    RaiseException( dwExceptionCode, dwExceptionFlags, 0, NULL );
 }
 
 class CAtlException
 {
 public:
-	CAtlException() throw() :
-		m_hr( E_FAIL )
-	{
-	}
+    CAtlException() throw() :
+        m_hr( E_FAIL )
+    {
+    }
 
-	CAtlException(_In_ HRESULT hr) throw() :
-		m_hr( hr )
-	{
-	}
+    CAtlException(_In_ HRESULT hr) throw() :
+        m_hr( hr )
+    {
+    }
 
-	operator HRESULT() const throw()
-	{
-		return( m_hr );
-	}
+    operator HRESULT() const throw()
+    {
+        return( m_hr );
+    }
 
 public:
-	HRESULT m_hr;
+    HRESULT m_hr;
 };
 
 #ifndef ATL_NOINLINE
@@ -73,15 +73,15 @@ public:
 #else
 ATL_NOINLINE __declspec(noreturn) inline void WINAPI AtlThrowImpl(_In_ HRESULT hr)
 {
-	throw CAtlException( hr );
+    throw CAtlException( hr );
 }
 #endif
 
 // Throw a CAtlException corresponding to the result of ::GetLastError
 ATL_NOINLINE __declspec(noreturn) inline void WINAPI AtlThrowLastWin32()
 {
-	DWORD dwError = ::GetLastError();
-	AtlThrowImpl( HRESULT_FROM_WIN32( dwError ) );
+    DWORD dwError = ::GetLastError();
+    AtlThrowImpl( HRESULT_FROM_WIN32( dwError ) );
 }
 
 #else  // no exception handling
@@ -91,25 +91,25 @@ ATL_NOINLINE __declspec(noreturn) inline void WINAPI AtlThrowLastWin32()
 
 ATL_NOINLINE inline void WINAPI AtlThrowImpl(_In_ HRESULT hr)
 {
-	ATLASSERT( false );
-	DWORD dwExceptionCode;
-	switch(hr)
-	{
-	case E_OUTOFMEMORY:
-		dwExceptionCode = STATUS_NO_MEMORY;
-		break;
-	default:
-		dwExceptionCode = EXCEPTION_ILLEGAL_INSTRUCTION;
-	}
-	_AtlRaiseException((DWORD)dwExceptionCode);
+    ATLASSERT( false );
+    DWORD dwExceptionCode;
+    switch(hr)
+    {
+    case E_OUTOFMEMORY:
+        dwExceptionCode = STATUS_NO_MEMORY;
+        break;
+    default:
+        dwExceptionCode = EXCEPTION_ILLEGAL_INSTRUCTION;
+    }
+    _AtlRaiseException((DWORD)dwExceptionCode);
 }
 #endif
 
 // Throw a CAtlException corresponding to the result of ::GetLastError
 ATL_NOINLINE inline void WINAPI AtlThrowLastWin32()
 {
-	DWORD dwError = ::GetLastError();
-	AtlThrowImpl( HRESULT_FROM_WIN32( dwError ) );
+    DWORD dwError = ::GetLastError();
+    AtlThrowImpl( HRESULT_FROM_WIN32( dwError ) );
 }
 
 #endif  // no exception handling

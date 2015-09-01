@@ -37,7 +37,7 @@ void ThrowComFail(JNIEnv *env, const char* desc, jint hr)
   jmethodID failCons = 
      env->GetMethodID(failClass, "<init>", "(ILjava/lang/String;)V");
   if (!desc) {
-	  desc = "Java/COM Error";
+      desc = "Java/COM Error";
   }
   jstring js = env->NewStringUTF(desc);
   jthrowable fail = (jthrowable)env->NewObject(failClass, failCons, hr, js);
@@ -47,7 +47,7 @@ void ThrowComFail(JNIEnv *env, const char* desc, jint hr)
 void ThrowComFailUnicode(JNIEnv *env, const wchar_t* desc, jint hr)
 {
   if (!desc) {
-	  ThrowComFail(env, "Java/COM Error", hr);
+      ThrowComFail(env, "Java/COM Error", hr);
   }
   jclass failClass = env->FindClass("com/jacob/com/ComFailException");
   // call the constructor that takes hr and message
@@ -67,9 +67,9 @@ int CheckEnv(JNIEnv *env1, JNIEnv *env2)
     jmethodID failCons = 
        env1->GetMethodID(failClass, "<init>", "()V");
     env1->ThrowNew(failClass, "Wrong Thread");
-		return 0;
+        return 0;
   }
-	return 1;
+    return 1;
 }
 
 }

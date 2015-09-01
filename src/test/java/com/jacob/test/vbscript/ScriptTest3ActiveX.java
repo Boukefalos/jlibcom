@@ -18,23 +18,23 @@
  *
  * This file incorporates work covered by the following copyright and
  * permission notice:
- * 	Copyright (c) 1999-2004 Sourceforge JACOB Project.
- * 	All rights reserved. Originator: Dan Adler (http://danadler.com).
- * 	Get more information about JACOB at http://sourceforge.net/projects/jacob-project
+ *     Copyright (c) 1999-2004 Sourceforge JACOB Project.
+ *     All rights reserved. Originator: Dan Adler (http://danadler.com).
+ *     Get more information about JACOB at http://sourceforge.net/projects/jacob-project
  *
- * 	This library is free software; you can redistribute it and/or
- * 	modify it under the terms of the GNU Lesser General Public
- * 	License as published by the Free Software Foundation; either
- * 	version 2.1 of the License, or (at your option) any later version.
+ *     This library is free software; you can redistribute it and/or
+ *     modify it under the terms of the GNU Lesser General Public
+ *     License as published by the Free Software Foundation; either
+ *     version 2.1 of the License, or (at your option) any later version.
  *
- * 	This library is distributed in the hope that it will be useful,
- * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
- * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * 	Lesser General Public License for more details.
+ *     This library is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *     Lesser General Public License for more details.
  *
- * 	You should have received a copy of the GNU Lesser General Public
- * 	License along with this library; if not, write to the Free Software
- * 	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ *     You should have received a copy of the GNU Lesser General Public
+ *     License along with this library; if not, write to the Free Software
+ *     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 package com.jacob.test.vbscript;
 
@@ -56,58 +56,58 @@ import com.jacob.test.BaseTestCase;
  * options.
  */
 public class ScriptTest3ActiveX extends BaseTestCase {
-	public static ActiveXComponent sC;
+    public static ActiveXComponent sC;
 
-	public static DispatchEvents de = null;
+    public static DispatchEvents de = null;
 
-	public static boolean quit = false;
+    public static boolean quit = false;
 
-	public void testYetAnotherScriptTest() {
-		try {
-			ComThread.InitMTA();
-			ScriptTest3ActiveXInner script = new ScriptTest3ActiveXInner();
-			script.start();
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException ie) {
-				// should we get this?
-			}
+    public void testYetAnotherScriptTest() {
+        try {
+            ComThread.InitMTA();
+            ScriptTest3ActiveXInner script = new ScriptTest3ActiveXInner();
+            script.start();
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ie) {
+                // should we get this?
+            }
 
-			Variant result = sC.invoke("Eval", getSampleVPScriptForEval());
-			System.out.println("eval(" + getSampleVPScriptForEval() + ") = "
-					+ result);
-			System.out.println("setting quit");
-			ScriptTest3ActiveX.quit = true;
-		} catch (ComException e) {
-			e.printStackTrace();
-			fail("Caught ComException " + e);
-		} finally {
-			System.out.println("main done");
-			ComThread.Release();
-		}
-	}
+            Variant result = sC.invoke("Eval", getSampleVPScriptForEval());
+            System.out.println("eval(" + getSampleVPScriptForEval() + ") = "
+                    + result);
+            System.out.println("setting quit");
+            ScriptTest3ActiveX.quit = true;
+        } catch (ComException e) {
+            e.printStackTrace();
+            fail("Caught ComException " + e);
+        } finally {
+            System.out.println("main done");
+            ComThread.Release();
+        }
+    }
 
-	public class ScriptTest3ActiveXInner extends Thread {
-		public void run() {
-			try {
-				ComThread.InitMTA();
-				System.out.println("OnInit");
-				String lang = "VBScript";
-				sC = new ActiveXComponent("ScriptControl");
-				sC.setProperty("Language", lang);
-				ScriptTestErrEvents te = new ScriptTestErrEvents();
-				de = new DispatchEvents(sC, te);
-				System.out.println("sControl=" + sC);
-				while (!quit) {
-					sleep(100);
-				}
-				ComThread.Release();
-			} catch (Exception e) {
-				e.printStackTrace();
-			} finally {
-				System.out.println("worker thread exits");
-			}
-		}
+    public class ScriptTest3ActiveXInner extends Thread {
+        public void run() {
+            try {
+                ComThread.InitMTA();
+                System.out.println("OnInit");
+                String lang = "VBScript";
+                sC = new ActiveXComponent("ScriptControl");
+                sC.setProperty("Language", lang);
+                ScriptTestErrEvents te = new ScriptTestErrEvents();
+                de = new DispatchEvents(sC, te);
+                System.out.println("sControl=" + sC);
+                while (!quit) {
+                    sleep(100);
+                }
+                ComThread.Release();
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                System.out.println("worker thread exits");
+            }
+        }
 
-	}
+    }
 }

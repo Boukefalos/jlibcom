@@ -18,23 +18,23 @@
  *
  * This file incorporates work covered by the following copyright and
  * permission notice:
- * 	Copyright (c) 1999-2004 Sourceforge JACOB Project.
- * 	All rights reserved. Originator: Dan Adler (http://danadler.com).
- * 	Get more information about JACOB at http://sourceforge.net/projects/jacob-project
+ *     Copyright (c) 1999-2004 Sourceforge JACOB Project.
+ *     All rights reserved. Originator: Dan Adler (http://danadler.com).
+ *     Get more information about JACOB at http://sourceforge.net/projects/jacob-project
  *
- * 	This library is free software; you can redistribute it and/or
- * 	modify it under the terms of the GNU Lesser General Public
- * 	License as published by the Free Software Foundation; either
- * 	version 2.1 of the License, or (at your option) any later version.
+ *     This library is free software; you can redistribute it and/or
+ *     modify it under the terms of the GNU Lesser General Public
+ *     License as published by the Free Software Foundation; either
+ *     version 2.1 of the License, or (at your option) any later version.
  *
- * 	This library is distributed in the hope that it will be useful,
- * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
- * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * 	Lesser General Public License for more details.
+ *     This library is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *     Lesser General Public License for more details.
  *
- * 	You should have received a copy of the GNU Lesser General Public
- * 	License along with this library; if not, write to the Free Software
- * 	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ *     You should have received a copy of the GNU Lesser General Public
+ *     License along with this library; if not, write to the Free Software
+ *     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 package com.jacob.test.vbscript;
 
@@ -71,73 +71,73 @@ import com.jacob.test.BaseTestCase;
  */
 
 public class ScriptTest2 extends BaseTestCase {
-	public void testScript2() {
-		try {
-			ComThread.InitSTA();
-			ScriptTestSTA script = new ScriptTestSTA();
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException ie) {
-				// should we get this?
-			}
+    public void testScript2() {
+        try {
+            ComThread.InitSTA();
+            ScriptTestSTA script = new ScriptTestSTA();
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ie) {
+                // should we get this?
+            }
 
-			String scriptCommand = getSampleVPScriptForEval();
-			// get a thread-local Dispatch from sCon
-			Dispatch sc = script.sCon.toDispatch();
+            String scriptCommand = getSampleVPScriptForEval();
+            // get a thread-local Dispatch from sCon
+            Dispatch sc = script.sCon.toDispatch();
 
-			// call a method on the thread-local Dispatch obtained
-			// from the DispatchProxy. If you try to make the same
-			// method call on the sControl object - you will get a
-			// ComException.
-			Variant result = Dispatch.call(sc, "Eval", scriptCommand);
-			System.out.println("eval(" + scriptCommand + ") = " + result);
-			script.quit();
-			System.out.println("called quit");
-		} catch (ComException e) {
-			e.printStackTrace();
-			fail("caught exception" + e);
-		} finally {
-			Integer I = null;
-			for (int i = 1; i < 1000000; i++) {
-				I = new Integer(i);
-			}
-			System.out.println(I);
-			ComThread.Release();
-		}
-	}
+            // call a method on the thread-local Dispatch obtained
+            // from the DispatchProxy. If you try to make the same
+            // method call on the sControl object - you will get a
+            // ComException.
+            Variant result = Dispatch.call(sc, "Eval", scriptCommand);
+            System.out.println("eval(" + scriptCommand + ") = " + result);
+            script.quit();
+            System.out.println("called quit");
+        } catch (ComException e) {
+            e.printStackTrace();
+            fail("caught exception" + e);
+        } finally {
+            Integer I = null;
+            for (int i = 1; i < 1000000; i++) {
+                I = new Integer(i);
+            }
+            System.out.println(I);
+            ComThread.Release();
+        }
+    }
 
-	public class ScriptTestSTA extends STA {
+    public class ScriptTestSTA extends STA {
 
-		public DispatchEvents de = null;
+        public DispatchEvents de = null;
 
-		public Dispatch sControl = null;
+        public Dispatch sControl = null;
 
-		public DispatchProxy sCon = null;
+        public DispatchProxy sCon = null;
 
-		public boolean OnInit() {
-			try {
-				System.out.println("OnInit");
-				System.out.println(Thread.currentThread());
-				String lang = "VBScript";
-				sControl = new ActiveXComponent("ScriptControl");
+        public boolean OnInit() {
+            try {
+                System.out.println("OnInit");
+                System.out.println(Thread.currentThread());
+                String lang = "VBScript";
+                sControl = new ActiveXComponent("ScriptControl");
 
-				// sCon can be called from another thread
-				sCon = new DispatchProxy(sControl);
+                // sCon can be called from another thread
+                sCon = new DispatchProxy(sControl);
 
-				Dispatch.put(sControl, "Language", lang);
-				ScriptTestErrEvents te = new ScriptTestErrEvents();
-				de = new DispatchEvents(sControl, te);
-				return true;
-			} catch (Exception e) {
-				e.printStackTrace();
-				return false;
-			}
-		}
+                Dispatch.put(sControl, "Language", lang);
+                ScriptTestErrEvents te = new ScriptTestErrEvents();
+                de = new DispatchEvents(sControl, te);
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
 
-		public void OnQuit() {
-			System.out.println("OnQuit");
-		}
+        public void OnQuit() {
+            System.out.println("OnQuit");
+        }
 
-	}
+    }
 
 }

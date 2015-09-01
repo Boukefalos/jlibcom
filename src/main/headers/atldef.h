@@ -13,7 +13,7 @@
 
 #pragma once
 
-#pragma warning(disable : 4619)	// there is no warning number
+#pragma warning(disable : 4619)    // there is no warning number
 
 #include <atlrc.h>
 #include <errno.h>
@@ -33,11 +33,11 @@
 #ifndef RC_INVOKED
 
 #ifndef __cplusplus
-	#error ATL requires C++ compilation (use a .cpp suffix)
+    #error ATL requires C++ compilation (use a .cpp suffix)
 #endif
 
 #ifdef UNDER_CE
-	#error This version of ATL is not currently supported for CE. Look for the CE specific version.
+    #error This version of ATL is not currently supported for CE. Look for the CE specific version.
 #endif
 
 // If you are mixing compilation units that are built as
@@ -47,7 +47,7 @@
 #if !defined(_ATL_MIXED)
 namespace Inconsistent_definition_of_symbol__ATL_MIXED
 {
-	struct _Please_define_it_the_same_throughout_your_project { };
+    struct _Please_define_it_the_same_throughout_your_project { };
 }
 #else
 namespace Inconsistent_definition_of_symbol__ATL_MIXED
@@ -57,28 +57,28 @@ namespace Inconsistent_definition_of_symbol__ATL_MIXED
 #else
 #pragma comment(linker, "/include:??3@YAXPEAX@Z")
 #endif
-	struct _Please_define_it_the_same_throughout_your_project { virtual void one(){} };
+    struct _Please_define_it_the_same_throughout_your_project { virtual void one(){} };
 }
 #endif
 namespace Inconsistent_definition_of_symbol__ATL_MIXED
 {
-	__declspec(selectany) _Please_define_it_the_same_throughout_your_project clash = _Please_define_it_the_same_throughout_your_project ();
+    __declspec(selectany) _Please_define_it_the_same_throughout_your_project clash = _Please_define_it_the_same_throughout_your_project ();
 }
 
 #if !defined(_ATL_MIXED)
 namespace Define_the_symbol__ATL_MIXED
 {
 #if defined(_M_CEE)
-	struct Thank_you { };
+    struct Thank_you { };
 #else
 #ifdef _M_IX86
 #pragma comment(linker, "/include:??3@YAXPAX@Z")
 #else
 #pragma comment(linker, "/include:??3@YAXPEAX@Z")
 #endif
-	struct Thank_you { virtual void one(){} };
+    struct Thank_you { virtual void one(){} };
 #endif
-	__declspec(selectany) Thank_you clash = Thank_you();
+    __declspec(selectany) Thank_you clash = Thank_you();
 }
 #endif
 
@@ -113,7 +113,7 @@ namespace Define_the_symbol__ATL_MIXED
 #if defined(_PREFAST_) && (_MSC_VER < 1600)
 #define ATLSTATIC_ASSERT(expr, comment)
 #else 
-#define ATLSTATIC_ASSERT(expr, comment)		static_assert(expr, comment)
+#define ATLSTATIC_ASSERT(expr, comment)        static_assert(expr, comment)
 #endif
 
 #ifdef _WIN64
@@ -184,19 +184,19 @@ Sometimes we have code like
 
 HRESULT ComMethod(void)
 {
-	ATLASSUME(m_pFoo);
-	return m_pFoo->Method();
+    ATLASSUME(m_pFoo);
+    return m_pFoo->Method();
 }
 
 We could add
-	if(!m_pFoo) return E_POINTER;
+    if(!m_pFoo) return E_POINTER;
 
 But this is very unlikely to help, since it removes the ability of the developer to debug this problem if it's seen in a retail
 build of the application. 
 
 We could try something more severe
 
-	if(!m_pFoo) terminate(); // or your favourite shutdown function
+    if(!m_pFoo) terminate(); // or your favourite shutdown function
 
 This would ensure good reporting (because VC8 terminate generates a Windows Error Report and crash dump), but hardly seems a big win 
 over the previous crash.
@@ -233,9 +233,9 @@ So we've done a broad replace of all the member-related ATLASSERT to ATLASSUME.
 #ifndef ATLENSURE_THROW
 #define ATLENSURE_THROW(expr, hr)          \
 do {                                       \
-	int __atl_condVal=!!(expr);            \
-	ATLASSUME(__atl_condVal);              \
-	if(!(__atl_condVal)) AtlThrow(hr);     \
+    int __atl_condVal=!!(expr);            \
+    ATLASSUME(__atl_condVal);              \
+    if(!(__atl_condVal)) AtlThrow(hr);     \
 } while (0)
 #endif // ATLENSURE_THROW
 
@@ -251,9 +251,9 @@ do {                                       \
 #ifndef ATLENSURE_RETURN_VAL
 #define ATLENSURE_RETURN_VAL(expr, val)        \
 do {                                           \
-	int __atl_condVal=!!(expr);                \
-	ATLASSERT(__atl_condVal);                  \
-	if(!(__atl_condVal)) return val;           \
+    int __atl_condVal=!!(expr);                \
+    ATLASSERT(__atl_condVal);                  \
+    if(!(__atl_condVal)) return val;           \
 } while (0) 
 #endif // ATLENSURE_RETURN_VAL
 
@@ -278,17 +278,17 @@ ATLENSURE_RETURN_HR is HRESULT-specific, though currently the same as _VAL
 #ifndef ATL_CRT_ERRORCHECK_SPRINTF
 #define ATL_CRT_ERRORCHECK_SPRINTF(expr) \
 do { \
-	errno_t _saveErrno = errno; \
-	errno = 0; \
-	(expr); \
-	if(0 != errno) \
-	{ \
-		AtlCrtErrorCheck(errno); \
-	} \
-	else \
-	{ \
-		errno = _saveErrno; \
-	} \
+    errno_t _saveErrno = errno; \
+    errno = 0; \
+    (expr); \
+    if(0 != errno) \
+    { \
+        AtlCrtErrorCheck(errno); \
+    } \
+    else \
+    { \
+        errno = _saveErrno; \
+    } \
 } while (0)
 #endif // ATL_CRT_ERRORCHECK_SPRINTF
 
@@ -383,33 +383,33 @@ do { \
 #endif
 
 #if defined(_ATL_DLL)
-	#define ATLAPI extern "C" HRESULT __declspec(dllimport) __stdcall
-	#define ATLAPI_(x) extern "C" __declspec(dllimport) x __stdcall
-	#define ATLINLINE
-	#define ATLAPIINL extern "C" inline HRESULT __stdcall
-	#define ATLAPIINL_(x) extern "C" inline x __stdcall
+    #define ATLAPI extern "C" HRESULT __declspec(dllimport) __stdcall
+    #define ATLAPI_(x) extern "C" __declspec(dllimport) x __stdcall
+    #define ATLINLINE
+    #define ATLAPIINL extern "C" inline HRESULT __stdcall
+    #define ATLAPIINL_(x) extern "C" inline x __stdcall
 #elif defined(_ATL_DLL_IMPL)
-	#define ATLAPI extern "C" inline HRESULT __stdcall
-	#define ATLAPI_(x) extern "C" inline x __stdcall
-	#define ATLAPIINL ATLAPI
-	#define ATLAPIINL_(x) ATLAPI_(x)
-	#define ATLINLINE
+    #define ATLAPI extern "C" inline HRESULT __stdcall
+    #define ATLAPI_(x) extern "C" inline x __stdcall
+    #define ATLAPIINL ATLAPI
+    #define ATLAPIINL_(x) ATLAPI_(x)
+    #define ATLINLINE
 #else
-	#define ATLAPI __declspec(nothrow) HRESULT __stdcall
-	#define ATLAPI_(x) __declspec(nothrow) x __stdcall
-	#define ATLAPIINL ATLAPI
-	#define ATLAPIINL_(x) ATLAPI_(x)
-	#define ATLINLINE inline
+    #define ATLAPI __declspec(nothrow) HRESULT __stdcall
+    #define ATLAPI_(x) __declspec(nothrow) x __stdcall
+    #define ATLAPIINL ATLAPI
+    #define ATLAPIINL_(x) ATLAPI_(x)
+    #define ATLINLINE inline
 #endif
 
 #ifdef _ATL_NO_EXCEPTIONS
-	#ifdef _AFX
-	// #error MFC projects cannot define _ATL_NO_EXCEPTIONS
-	#endif
+    #ifdef _AFX
+    // #error MFC projects cannot define _ATL_NO_EXCEPTIONS
+    #endif
 #else
-	#ifndef _CPPUNWIND
-	#define _ATL_NO_EXCEPTIONS
-	#endif
+    #ifndef _CPPUNWIND
+    #define _ATL_NO_EXCEPTIONS
+    #endif
 #endif
 
 #ifdef _CPPUNWIND
@@ -421,9 +421,9 @@ do { \
 #else
 /* prefast noise VSW 489981 */
 #define ATLTRYALLOC(x) __pragma(warning(push)) __pragma(warning(disable: 4571)) try{x;} catch(...) {} __pragma(warning(pop))
-#endif	//__AFX
+#endif    //__AFX
 
-#endif	//ATLTRYALLOC
+#endif    //ATLTRYALLOC
 
 // If you define _ATLTRY before including this file, then
 // you should define _ATLCATCH and _ATLRETHROW as well.
@@ -444,7 +444,7 @@ do { \
 #endif
 
 #define _ATLRETHROW throw
-#endif	// _ATLTRY
+#endif    // _ATLTRY
 
 /* 
 COM functions should not throw. Which means we should protect their callers from C++ exceptions leaking out. These macros
@@ -454,38 +454,38 @@ this end
  
 #ifndef _ATL_COM_BEGIN 
 #define _ATL_COM_BEGIN \
-	HRESULT __hrAtlComMethod=S_OK; \
-	try \
-	{
+    HRESULT __hrAtlComMethod=S_OK; \
+    try \
+    {
 #endif
 
 #ifdef _AFX
 /* Nice to do something more complex here in future to translate an MFC exception to a better HR */
 #define _AFX_COM_END_PART \
-	catch(CException *e) \
-	{ \
-		if(e) \
-		{ \
-			e->Delete(); \
-		} \
-		__hrAtlComMethod=E_FAIL; \
-	}
+    catch(CException *e) \
+    { \
+        if(e) \
+        { \
+            e->Delete(); \
+        } \
+        __hrAtlComMethod=E_FAIL; \
+    }
 #else
 #define _AFX_COM_END_PART \
-	catch(CAtlException e) \
-	{ \
-		__hrAtlComMethod=e.m_hr; \
-	}
+    catch(CAtlException e) \
+    { \
+        __hrAtlComMethod=e.m_hr; \
+    }
 #endif
 
 #ifndef _ATL_COM_END 
 #define _ATL_COM_END \
-	_AFX_COM_END_PART \
-	catch(...) \
-	{ \
-		__hrAtlComMethod=E_FAIL; \
-	} \
-	return hr; 
+    _AFX_COM_END_PART \
+    catch(...) \
+    { \
+        __hrAtlComMethod=E_FAIL; \
+    } \
+    return hr; 
 #endif
 
 
@@ -494,7 +494,7 @@ this end
 
 #ifndef ATLTRYALLOC
 #define ATLTRYALLOC(x) x;
-#endif	//ATLTRYALLOC
+#endif    //ATLTRYALLOC
 
 // if _ATLTRY is defined before including this file then 
 // _ATLCATCH and _ATLRETHROW should be defined as well.
@@ -504,13 +504,13 @@ this end
 #define _ATLCATCHALL() __pragma(warning(push)) __pragma(warning(disable: 4127)) if( false ) __pragma(warning(pop))
 #define _ATLDELETEEXCEPTION(e)
 #define _ATLRETHROW
-#endif	// _ATLTRY
+#endif    // _ATLTRY
 
-#endif	//_CPPUNWIND
+#endif    //_CPPUNWIND
 
 #ifndef ATLTRY
 #define ATLTRY(x) ATLTRYALLOC(x)
-#endif	//ATLTRY
+#endif    //ATLTRY
 
 #define offsetofclass(base, derived) ((DWORD_PTR)(static_cast<base*>((derived*)_ATL_PACKING))-_ATL_PACKING)
 
@@ -558,19 +558,19 @@ this end
 #ifndef NOMCX
 #define NOMCX
 #endif
-#endif	// ATL_NO_LEAN_AND_MEAN
+#endif    // ATL_NO_LEAN_AND_MEAN
 
 #ifdef NOSERVICE
 #ifndef _ATL_NO_SERVICE
 #define _ATL_NO_SERVICE
-#endif	// _ATL_NO_SERVICE
+#endif    // _ATL_NO_SERVICE
 #else
 #ifdef _ATL_NO_SERVICE
 #ifndef NOSERVICE
 #define NOSERVICE
-#endif	// NOSERVICE
-#endif	// _ATL_NO_SERVICE
-#endif	// NOSERVICE
+#endif    // NOSERVICE
+#endif    // _ATL_NO_SERVICE
+#endif    // NOSERVICE
 
 #include <malloc.h>
 #ifdef _DEBUG
@@ -580,15 +580,15 @@ this end
 // Warning: if you define the above symbol, you will have
 // to provide your own definition of the ATLASSERT(x) macro
 // in order to compile ATL
-	#include <crtdbg.h>
+    #include <crtdbg.h>
 #endif
 
 #endif // RC_INVOKED
 
 // Note : we can not use macros to generate the window class names because it
 //        will require nested macros. rc.exe does not handle nested macros.
-// #define ATLAXWIN_CLASS	_ATL_STRINGIZE(_ATL_APPEND(AtlAxWin, _ATL_FILENAME_VER_NUM))
-// #define ATLAXWINLIC_CLASS	_ATL_STRINGIZE(_ATL_APPEND(AtlAxWinLic, _ATL_FILENAME_VER_NUM))
+// #define ATLAXWIN_CLASS    _ATL_STRINGIZE(_ATL_APPEND(AtlAxWin, _ATL_FILENAME_VER_NUM))
+// #define ATLAXWINLIC_CLASS    _ATL_STRINGIZE(_ATL_APPEND(AtlAxWinLic, _ATL_FILENAME_VER_NUM))
 
 #define ATLAXWIN_CLASS "AtlAxWin100"
 #define ATLAXWINLIC_CLASS "AtlAxWinLic100"
@@ -622,10 +622,10 @@ that we consider it dangerous to even throw an exception
 #else
 #if !defined(__MINGW32__)
 #define PTM_WARNING_DISABLE \
-	__pragma(warning( push )) \
-	__pragma(warning( disable : 4867 ))
+    __pragma(warning( push )) \
+    __pragma(warning( disable : 4867 ))
 #define PTM_WARNING_RESTORE \
-	__pragma(warning( pop ))
+    __pragma(warning( pop ))
 #else
 #define PTM_WARNING_DISABLE
 #define PTM_WARNING_RESTORE
@@ -695,13 +695,13 @@ that we consider it dangerous to even throw an exception
 #define ATLPREFAST_SUPPRESS(x)
 #define ATLPREFAST_UNSUPPRESS()
 #endif
-	
+    
 #ifndef _FormatMessage_format_string_
 #define _FormatMessage_format_string_
 #endif
-	
+    
 /* 
-	Helper functions for SAL annotation
+    Helper functions for SAL annotation
 */
 namespace ATL {
 

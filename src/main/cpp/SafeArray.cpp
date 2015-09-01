@@ -1877,7 +1877,7 @@ JNIEXPORT void JNICALL Java_com_jacob_com_SafeArray_setString__ILjava_lang_Strin
     env->ReleaseStringChars(s, str);
     VariantClear(&v);
   } else if (vt == VT_BSTR) {
-	// SF 2847577 support unicode move from GetStringUTFChars() to GetStringChars()
+    // SF 2847577 support unicode move from GetStringUTFChars() to GetStringChars()
     const jchar *str = env->GetStringChars(s, NULL);
     CComBSTR bs((LPCOLESTR)str);
     SafeArrayPutElement(sa,&idx,bs.Detach());
@@ -2623,12 +2623,12 @@ JNIEXPORT void JNICALL Java_com_jacob_com_SafeArray_setVariants
 }
 
 /* PLEASE NOTE THE LINE: 
-	jint *jIndices = env->GetIntArrayElements(indices, NULL);
-	which I added to replace "long idx[2] = {i,j};" from the 2D case.
-	Not sure if this is correct. Also, check that I am doing the null test and
-	dimension test correctly.
-	Would really like to call     env->ReleaseIntArrayElements(indices, jIndices, NULL);    
-	in here but I can't get it to work
+    jint *jIndices = env->GetIntArrayElements(indices, NULL);
+    which I added to replace "long idx[2] = {i,j};" from the 2D case.
+    Not sure if this is correct. Also, check that I am doing the null test and
+    dimension test correctly.
+    Would really like to call     env->ReleaseIntArrayElements(indices, jIndices, NULL);    
+    in here but I can't get it to work
 */
 
 #define GETNDCODE(varType, varAccess, jtyp) \
@@ -2669,12 +2669,12 @@ JNIEXPORT void JNICALL Java_com_jacob_com_SafeArray_setVariants
 //---------------------------------
 
 /* PLEASE NOTE THE LINE: 
-	jint *jIndices = env->GetIntArrayElements(indices, NULL);
-	which I added to replace "long idx[2] = {i,j};" from the 2D case.
-	Not sure if this is correct. Also, check that I am doing the null test and
-	dimension test correctly.
-	Would really like to call     env->ReleaseIntArrayElements(indices, jIndices, NULL);    
-	in here but I can't get it to work
+    jint *jIndices = env->GetIntArrayElements(indices, NULL);
+    which I added to replace "long idx[2] = {i,j};" from the 2D case.
+    Not sure if this is correct. Also, check that I am doing the null test and
+    dimension test correctly.
+    Would really like to call     env->ReleaseIntArrayElements(indices, jIndices, NULL);    
+    in here but I can't get it to work
  */
 
 #define SETNDCODE(varType, varAccess) \

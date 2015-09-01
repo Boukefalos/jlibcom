@@ -37,13 +37,13 @@ class EventProxy : public IDispatch
 {
 private:
   int     connected;
-  LONG    m_cRef;		// a reference counter
+  LONG    m_cRef;        // a reference counter
   CComPtr<IConnectionPoint> pCP; // the connection point
   DWORD   dwEventCookie; // connection point cookie
   jobject javaSinkObj;   // the java object to delegate calls
 
   IID     eventIID;      // the interface iid passed in
-  int     MethNum;		// number of methods in the callback interface
+  int     MethNum;        // number of methods in the callback interface
   CComBSTR *MethName;   // Array of method names
   DISPID   *MethID;     // Array of method ids, used to match invokations to method names
   JavaVM   *jvm;        // The java vm we are running
@@ -53,7 +53,7 @@ public:
   // constuct with a global JNI ref to a sink object
   // to which we will delegate event callbacks
   EventProxy(JNIEnv *jenv, 
-  		jobject aSinkObj, 
+          jobject aSinkObj, 
         CComPtr<IConnectionPoint> pConn, 
         IID eventIID, 
         CComBSTR *mName, 
@@ -72,7 +72,7 @@ public:
   {
     LONG res = InterlockedDecrement(&m_cRef);
     if (res == 0) {
-    	delete this;
+        delete this;
     }
     return res;
     

@@ -14,35 +14,35 @@ import com.jacob.com.Dispatch;
  */
 public class VisioPrintTest {
 
-	/**
-	 * Runs the print ant lets the user say ok or cancel. Note the funky Visio
-	 * behavior if someone hits the cancel button
-	 * 
-	 */
-	public void testPrintDialog() {
-		ActiveXComponent oActiveX = new ActiveXComponent("Visio.Application");
-		Dispatch oDocuments = oActiveX.getProperty("Documents").toDispatch();
-		// create a blank document
-		Dispatch.call(oDocuments, "Add", "");
-		try {
-			Dispatch.call(oActiveX, "DoCmd", new Integer(1010)).getInt();
-			System.out.println("User hit the ok button.");
-		} catch (ComFailException e) {
-			System.out.println("User hit the cancel button: " + e);
-		} finally {
-			oActiveX.invoke("Quit");
-		}
-		return;
-	}
+    /**
+     * Runs the print ant lets the user say ok or cancel. Note the funky Visio
+     * behavior if someone hits the cancel button
+     * 
+     */
+    public void testPrintDialog() {
+        ActiveXComponent oActiveX = new ActiveXComponent("Visio.Application");
+        Dispatch oDocuments = oActiveX.getProperty("Documents").toDispatch();
+        // create a blank document
+        Dispatch.call(oDocuments, "Add", "");
+        try {
+            Dispatch.call(oActiveX, "DoCmd", new Integer(1010)).getInt();
+            System.out.println("User hit the ok button.");
+        } catch (ComFailException e) {
+            System.out.println("User hit the cancel button: " + e);
+        } finally {
+            oActiveX.invoke("Quit");
+        }
+        return;
+    }
 
-	/**
-	 * quick main() to test this
-	 * 
-	 * @param args
-	 *            standard command line arguments
-	 */
-	public static void main(String[] args) {
-		VisioPrintTest testObject = new VisioPrintTest();
-		testObject.testPrintDialog();
-	}
+    /**
+     * quick main() to test this
+     * 
+     * @param args
+     *            standard command line arguments
+     */
+    public static void main(String[] args) {
+        VisioPrintTest testObject = new VisioPrintTest();
+        testObject.testPrintDialog();
+    }
 }

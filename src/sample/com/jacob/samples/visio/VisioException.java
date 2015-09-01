@@ -10,16 +10,16 @@ package com.jacob.samples.visio;
  * blocks everywhere
  */
 public class VisioException extends Exception {
-	/**
-	 * Totally dummy value to make Eclipse quit complaining
-	 */
-	private static final long serialVersionUID = 1L;
+    /**
+     * Totally dummy value to make Eclipse quit complaining
+     */
+    private static final long serialVersionUID = 1L;
 
-	public VisioException(String msg) {
-		super(msg);
-	}
+    public VisioException(String msg) {
+        super(msg);
+    }
 
-	public VisioException(Throwable cause) {
-		super(cause);
-	}
+    public VisioException(Throwable cause) {
+        super(cause);
+    }
 }

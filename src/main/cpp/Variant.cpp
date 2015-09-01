@@ -116,26 +116,26 @@ void zeroVariant(JNIEnv *env, jobject _this)
 JNIEXPORT jbyteArray JNICALL Java_com_jacob_com_Variant_SerializationWriteToBytes
   (JNIEnv *env, jobject _this){
   VARIANT *v = extractVariant(env, _this);
-	  if (v) 
-	  {
-	    DWORD flags = MSHCTX_LOCAL;
-	    jint size = VARIANT_UserSize(&flags, 0L, v);
-	    // allocate a byte array of the right length
-	    jbyte* pBuf = new jbyte[size];
-	    // clear it out
-	    ZeroMemory(pBuf, size);
-	    // marshall the Variant into the buffer
-	    VARIANT_UserMarshal(&flags, (unsigned char *)pBuf, v);
-	    // need to convert the buffer to a java byte ba[]
-	    jbyteArray ba = env->NewByteArray(size);
-	    env->SetByteArrayRegion(ba, 0, size, pBuf);
-	    // and delete the original memory
-	    delete [] pBuf;
-		return ba;
-	  } else {
-	    jbyteArray ba = env->NewByteArray(0);
-	    return ba;
-	  }
+      if (v) 
+      {
+        DWORD flags = MSHCTX_LOCAL;
+        jint size = VARIANT_UserSize(&flags, 0L, v);
+        // allocate a byte array of the right length
+        jbyte* pBuf = new jbyte[size];
+        // clear it out
+        ZeroMemory(pBuf, size);
+        // marshall the Variant into the buffer
+        VARIANT_UserMarshal(&flags, (unsigned char *)pBuf, v);
+        // need to convert the buffer to a java byte ba[]
+        jbyteArray ba = env->NewByteArray(size);
+        env->SetByteArrayRegion(ba, 0, size, pBuf);
+        // and delete the original memory
+        delete [] pBuf;
+        return ba;
+      } else {
+        jbyteArray ba = env->NewByteArray(0);
+        return ba;
+      }
   }
   
 /**
@@ -148,17 +148,17 @@ JNIEXPORT void JNICALL Java_com_jacob_com_Variant_SerializationReadFromBytes
   (JNIEnv *env, jobject _this, jbyteArray ba){
 
   VARIANT *v = extractVariant(env, _this);
-	if (v){
-		// get a buffer from it
-		jbyte *pBuf = env->GetByteArrayElements(ba, 0);
-		// unmarshall the Variant from the buffer
-		DWORD flags = MSHCTX_LOCAL;
-		printf("about to unmarshall array elements\n");
-		VARIANT_UserUnmarshal(&flags, (unsigned char *)pBuf, v);
-		// release the byte array
-	    printf("about to release array elements\n");
-		env->ReleaseByteArrayElements(ba, pBuf, 0);
-	}
+    if (v){
+        // get a buffer from it
+        jbyte *pBuf = env->GetByteArrayElements(ba, 0);
+        // unmarshall the Variant from the buffer
+        DWORD flags = MSHCTX_LOCAL;
+        printf("about to unmarshall array elements\n");
+        VARIANT_UserUnmarshal(&flags, (unsigned char *)pBuf, v);
+        // release the byte array
+        printf("about to release array elements\n");
+        env->ReleaseByteArrayElements(ba, pBuf, 0);
+    }
   }
 
 /**
@@ -272,13 +272,13 @@ JNIEXPORT void JNICALL Java_com_jacob_com_Variant_putVariantStringRef
   if (v) {
     VariantClear(v); // whatever was there before
 
-	const jchar *cStr = env->GetStringChars(s,NULL);
-	// SF 1314116 
-	// DBeck: 2005-09-23: changed CComBSTR c-tor to accept
-	//	Unicode string (no terminating NULL) provided by GetStringChars
-	const jsize numChars = env->GetStringLength(s);
+    const jchar *cStr = env->GetStringChars(s,NULL);
+    // SF 1314116 
+    // DBeck: 2005-09-23: changed CComBSTR c-tor to accept
+    //    Unicode string (no terminating NULL) provided by GetStringChars
+    const jsize numChars = env->GetStringLength(s);
     //CComBSTR bs(cStr);
-	CComBSTR bs( numChars, (LPCOLESTR)cStr ); // SR cast SF 1689061
+    CComBSTR bs( numChars, (LPCOLESTR)cStr ); // SR cast SF 1689061
 
     BSTR *pbs = (BSTR *)CoTaskMemAlloc(sizeof(BSTR));
     bs.CopyTo(pbs);
@@ -802,11 +802,11 @@ JNIEXPORT void JNICALL Java_com_jacob_com_Variant_putVariantString
 
     const jchar *cStr = env->GetStringChars(s,NULL);
     // SF 1314116 
-	// DBeck: 2005-09-23: changed CComBSTR c-tor to accept
-	//	Unicode string (no terminating NULL) provided by GetStringChars
-	const jsize numChars = env->GetStringLength(s);
+    // DBeck: 2005-09-23: changed CComBSTR c-tor to accept
+    //    Unicode string (no terminating NULL) provided by GetStringChars
+    const jsize numChars = env->GetStringLength(s);
     //CComBSTR bs(cStr);
-	CComBSTR bs( numChars, (LPCOLESTR)cStr ); // SR cast SF 1689061
+    CComBSTR bs( numChars, (LPCOLESTR)cStr ); // SR cast SF 1689061
 
     V_VT(v) = VT_BSTR;
     V_BSTR(v) = bs.Copy();
@@ -975,7 +975,7 @@ JNIEXPORT void JNICALL Java_com_jacob_com_Variant_putVariantNoParam
 {
   VARIANT *v = extractVariant(env, _this);
   if (v) {
-  	// SF 3377279 clear variable to fix leak
+      // SF 3377279 clear variable to fix leak
     VariantClear(v);
     V_VT(v) = VT_ERROR;
     V_ERROR(v) = DISP_E_PARAMNOTFOUND;
@@ -1041,7 +1041,7 @@ JNIEXPORT jshort JNICALL Java_com_jacob_com_Variant_getVariantType
 /**
  * this is a big cover method that returns TRUE if 
  * the variant type is 
- * 	VT_EMPTY, VT_NULL, VT_ERROR or VT_DISPATCH with no dispatch object
+ *     VT_EMPTY, VT_NULL, VT_ERROR or VT_DISPATCH with no dispatch object
  * */
 JNIEXPORT jboolean JNICALL Java_com_jacob_com_Variant_isVariantConsideredNull
   (JNIEnv *env, jobject _this)
@@ -1110,14 +1110,14 @@ JNIEXPORT jlong JNICALL Java_com_jacob_com_Variant_getVariantVariant
       return NULL;
     }
 
-	VARIANT *refVar = V_VARIANTREF(v);
+    VARIANT *refVar = V_VARIANTREF(v);
 
-	// we could have made a copy of refV here but we aren't every going to free 
-	// it outside of the scope of the enclosing context so we will just used the
-	// enclosed.  This relies on the java layer to zero out its ref to this
-	// enclosed variant before the gc can come along and free the memory out from
-	// under this enclosing variant.
-	return (jlong)refVar;
+    // we could have made a copy of refV here but we aren't every going to free 
+    // it outside of the scope of the enclosing context so we will just used the
+    // enclosed.  This relies on the java layer to zero out its ref to this
+    // enclosed variant before the gc can come along and free the memory out from
+    // under this enclosing variant.
+    return (jlong)refVar;
   }
 
   return NULL;
@@ -1136,9 +1136,9 @@ JNIEXPORT jlong JNICALL Java_com_jacob_com_Variant_getVariantVariant
       DECIMAL *pd = (DECIMAL *)CoTaskMemAlloc(sizeof(DECIMAL));
       pd->scale = scale;
       if (signum == 1 || signum == 0){
-    	  pd->sign = 0;
+          pd->sign = 0;
       } else {
-    	  pd->sign = 0x80;
+          pd->sign = 0x80;
       }
       pd->Hi32 = hi;
       pd->Mid32 = mid;
@@ -1163,9 +1163,9 @@ JNIEXPORT jlong JNICALL Java_com_jacob_com_Variant_getVariantVariant
       d = (DECIMAL*)v;
       d->scale = scale;
       if (signum == 1 || signum == 0){
-    	  d->sign = 0;
+          d->sign = 0;
       } else {
-    	  d->sign = 0x80;
+          d->sign = 0x80;
       }
       d->Hi32 = hi;
       d->Mid32 = mid;

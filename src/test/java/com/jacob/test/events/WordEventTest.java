@@ -18,23 +18,23 @@
  *
  * This file incorporates work covered by the following copyright and
  * permission notice:
- * 	Copyright (c) 1999-2004 Sourceforge JACOB Project.
- * 	All rights reserved. Originator: Dan Adler (http://danadler.com).
- * 	Get more information about JACOB at http://sourceforge.net/projects/jacob-project
+ *     Copyright (c) 1999-2004 Sourceforge JACOB Project.
+ *     All rights reserved. Originator: Dan Adler (http://danadler.com).
+ *     Get more information about JACOB at http://sourceforge.net/projects/jacob-project
  *
- * 	This library is free software; you can redistribute it and/or
- * 	modify it under the terms of the GNU Lesser General Public
- * 	License as published by the Free Software Foundation; either
- * 	version 2.1 of the License, or (at your option) any later version.
+ *     This library is free software; you can redistribute it and/or
+ *     modify it under the terms of the GNU Lesser General Public
+ *     License as published by the Free Software Foundation; either
+ *     version 2.1 of the License, or (at your option) any later version.
  *
- * 	This library is distributed in the hope that it will be useful,
- * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
- * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * 	Lesser General Public License for more details.
+ *     This library is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *     Lesser General Public License for more details.
  *
- * 	You should have received a copy of the GNU Lesser General Public
- * 	License along with this library; if not, write to the Free Software
- * 	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ *     You should have received a copy of the GNU Lesser General Public
+ *     License along with this library; if not, write to the Free Software
+ *     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 package com.jacob.test.events;
 
@@ -58,74 +58,74 @@ import com.jacob.test.BaseTestCase;
  */
 public class WordEventTest extends BaseTestCase {
 
-	/**
-	 * load up word, register for events and make stuff happen
-	 * 
-	 * @param args
-	 */
-	public void testCaptureWordEvents() {
-		String pid = "Word.Application";
-		String typeLibLocation = null;
+    /**
+     * load up word, register for events and make stuff happen
+     * 
+     * @param args
+     */
+    public void testCaptureWordEvents() {
+        String pid = "Word.Application";
+        String typeLibLocation = null;
 
-		// Grab The Component.
-		ActiveXComponent axc = new ActiveXComponent(pid);
-		try {
-			// Add a listener (doesn't matter what it is).
-			DispatchEvents de;
-			if (typeLibLocation == null) {
-				de = new DispatchEvents(axc, new WordEventTest());
-			} else {
-				de = new DispatchEvents(axc, new WordEventTest(), pid,
-						typeLibLocation);
-			}
-			if (de == null) {
-				fail("No exception thrown but no dispatch returned for Word events");
-			} else {
-				// Yea!
-				System.out.println("Successfully attached to " + pid);
+        // Grab The Component.
+        ActiveXComponent axc = new ActiveXComponent(pid);
+        try {
+            // Add a listener (doesn't matter what it is).
+            DispatchEvents de;
+            if (typeLibLocation == null) {
+                de = new DispatchEvents(axc, new WordEventTest());
+            } else {
+                de = new DispatchEvents(axc, new WordEventTest(), pid,
+                        typeLibLocation);
+            }
+            if (de == null) {
+                fail("No exception thrown but no dispatch returned for Word events");
+            } else {
+                // Yea!
+                System.out.println("Successfully attached to " + pid);
 
-			}
-			// this is different from the ExcelEventTest because it uses
-			// the jacob active X api instead of the Dispatch api
-			System.out.println("version=" + axc.getPropertyAsString("Version"));
-			axc.setProperty("Visible", true);
-			ActiveXComponent documents = axc
-					.getPropertyAsComponent("Documents");
-			if (documents == null) {
-				fail("unable to get documents");
-			}
-			axc.invoke("Quit", new Variant[] {});
+            }
+            // this is different from the ExcelEventTest because it uses
+            // the jacob active X api instead of the Dispatch api
+            System.out.println("version=" + axc.getPropertyAsString("Version"));
+            axc.setProperty("Visible", true);
+            ActiveXComponent documents = axc
+                    .getPropertyAsComponent("Documents");
+            if (documents == null) {
+                fail("unable to get documents");
+            }
+            axc.invoke("Quit", new Variant[] {});
 
-		} catch (ComException cfe) {
-			cfe.printStackTrace();
-			fail("Failed to attach to " + pid + ": " + cfe.getMessage());
+        } catch (ComException cfe) {
+            cfe.printStackTrace();
+            fail("Failed to attach to " + pid + ": " + cfe.getMessage());
 
-		}
-		System.out
-				.println("Someone needs to add some MSWord commands to this to "
-						+ "make some on screen stuff happens so the tester "
-						+ "thinks we tested something");
-	}
+        }
+        System.out
+                .println("Someone needs to add some MSWord commands to this to "
+                        + "make some on screen stuff happens so the tester "
+                        + "thinks we tested something");
+    }
 
-	/**
-	 * a class that receives messages from word
-	 */
-	public class WordEvents extends InvocationProxy {
-		/**
-		 * Constructor so we can create an instance that implements invoke()
-		 */
-		public WordEvents() {
-		}
+    /**
+     * a class that receives messages from word
+     */
+    public class WordEvents extends InvocationProxy {
+        /**
+         * Constructor so we can create an instance that implements invoke()
+         */
+        public WordEvents() {
+        }
 
-		/**
-		 * override the invoke() method to log all the events without writing a
-		 * bunch of code
-		 */
-		public Variant invoke(String methodName, Variant targetParameter[]) {
-			System.out.println("Received event from Windows program"
-					+ methodName);
-			return null;
-		}
+        /**
+         * override the invoke() method to log all the events without writing a
+         * bunch of code
+         */
+        public Variant invoke(String methodName, Variant targetParameter[]) {
+            System.out.println("Received event from Windows program"
+                    + methodName);
+            return null;
+        }
 
-	}
+    }
 }
